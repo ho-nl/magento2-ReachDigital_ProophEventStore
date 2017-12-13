@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Prooph\EventStore\EventStore" type="Prooph\EventStore\Pdo\MySqlEventStore"/>
+    <preference for="Prooph\Common\Messaging\MessageFactory" type="Prooph\Common\Messaging\FQCNMessageFactory"/>
+    <preference for="Prooph\EventStore\Pdo\PersistenceStrategy" type="Prooph\EventStore\Pdo\PersistenceStrategy\MySqlAggregateStreamStrategy"/>
+    <preference for="Prooph\Common\Event\ActionEventEmitter" type="Prooph\Common\Event\ProophActionEventEmitter"/>
+    <preference for="Prooph\SnapshotStore\SnapshotStore" type="Prooph\SnapshotStore\Pdo\PdoSnapshotStore"/>
+
+    <type name="Prooph\EventStore\Pdo\MySqlEventStore">
+        <arguments>
+            <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo</argument>
+        </arguments>
+    </type>
+    <type name="Prooph\SnapshotStore\Pdo\PdoSnapshotStore">
+        <arguments>
+            <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo</argument>
+        </arguments>
+    </type>
+</config>
