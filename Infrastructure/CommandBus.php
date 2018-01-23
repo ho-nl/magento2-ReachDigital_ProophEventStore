@@ -3,7 +3,6 @@
 
 namespace ReachDigital\ProophEventStore\Infrastructure;
 
-
 use Prooph\Common\Event\ActionEventEmitter;
 use Prooph\ServiceBus\Plugin\Router\CommandRouter;
 

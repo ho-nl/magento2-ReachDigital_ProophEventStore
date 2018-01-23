@@ -15,10 +15,25 @@
         </arguments>
     </type>
 
+    <preference for="Prooph\ServiceBus\Plugin\Router\EventRouter" type="ReachDigital\ProophEventStore\Infrastructure\EventRouter"/>
+
+    <preference for="Prooph\ServiceBus\CommandBus" type="ReachDigital\ProophEventStore\Infrastructure\CommandBus"/>
+    <type name="ReachDigital\ProophEventStore\Infrastructure\CommandBus">
+        <arguments>
+            <argument name="actionEventEmitter" xsi:type="object" shared="false">Prooph\Common\Event\ProophActionEventEmitter</argument>
+        </arguments>
+    </type>
+
+    <preference for="Prooph\ServiceBus\EventBus" type="ReachDigital\ProophEventStore\Infrastructure\EventBus" />
+    <type name="ReachDigital\ProophEventStore\Infrastructure\EventBus">
+        <arguments>
+            <argument name="actionEventEmitter" xsi:type="object" shared="false">Prooph\Common\Event\ProophActionEventEmitter</argument>
+        </arguments>
+    </type>
+
     <preference for="Prooph\EventStore\EventStore" type="Prooph\EventStore\Pdo\MySqlEventStore"/>
     <preference for="Prooph\Common\Messaging\MessageFactory" type="Prooph\Common\Messaging\FQCNMessageFactory"/>
     <preference for="Prooph\EventStore\Pdo\PersistenceStrategy" type="Prooph\EventStore\Pdo\PersistenceStrategy\MySqlSingleStreamStrategy"/>
-    <preference for="Prooph\Common\Event\ActionEventEmitter" type="Prooph\Common\Event\ProophActionEventEmitter"/>
     <preference for="Prooph\SnapshotStore\SnapshotStore" type="Prooph\SnapshotStore\Pdo\PdoSnapshotStore"/>
 
     <type name="Prooph\EventStore\Pdo\MySqlEventStore">
@@ -32,13 +47,9 @@
         </arguments>
     </type>
 
-
-    <type name="ReachDigital\ProophEventStore\Infrastructure\ProjectionManagerPool">
+    <type name="Prooph\EventStore\Pdo\Projection\MySqlProjectionManager">
         <arguments>
-            <argument name="projectionManagers" xsi:type="array">
-                <item name="mysql" xsi:type="object">Prooph\EventStore\Pdo\Projection\MySqlProjectionManager</item>
-            </argument>
+            <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo</argument>
         </arguments>
     </type>
 </config>
-

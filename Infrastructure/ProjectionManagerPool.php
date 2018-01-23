@@ -33,14 +33,16 @@ class ProjectionManagerPool
         return $this->projectionManagers[$name];
     }
 
-    public function remove(string $name): void {
+    public function remove(string $name): void
+    {
         if (! isset($this->projectionManagers[$name])) {
             throw new ProjectionManagerNotFoundException(__('Projection not found %1', $name));
         }
         unset($this->projectionManagers[$name]);
     }
 
-    public function all(): array {
+    public function all(): array
+    {
         return $this->projectionManagers;
     }
 }
