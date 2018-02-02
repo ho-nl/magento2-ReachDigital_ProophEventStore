@@ -5,11 +5,10 @@ namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures;
 
 use Prooph\EventSourcing\AggregateChanged;
 use Prooph\EventSourcing\AggregateRoot;
-use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Api\Data\UserInterface;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Event\EmailChanged;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Event\UserRegistered;
 
-class User extends AggregateRoot implements UserInterface
+class User extends AggregateRoot
 {
     private $id, $email, $password;
 

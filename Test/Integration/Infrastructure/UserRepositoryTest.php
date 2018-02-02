@@ -5,7 +5,6 @@ namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure
 
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
-use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Api\UserRepositoryInterface;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure\UserRepository;
 
 class UserRepositoryTest extends TestCase
@@ -23,7 +22,7 @@ class UserRepositoryTest extends TestCase
      */
     public function user_repository_initialisation()
     {
-        $userRepository = $this->objectManager->get(UserRepositoryInterface::class);
+        $userRepository = $this->objectManager->get(UserRepository::class);
         $this->assertInstanceOf(UserRepository::class, $userRepository);
     }
 }

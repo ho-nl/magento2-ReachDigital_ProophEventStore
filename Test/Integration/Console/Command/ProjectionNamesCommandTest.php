@@ -27,7 +27,17 @@ class ProjectionNamesCommandTest extends TestCase
 
     protected function setUp() {
         $this->objectManager = Bootstrap::getObjectManager();
-        $this->command = $this->objectManager->create(ProjectionNamesCommand::class);
+        $this->command = $this->objectManager->create(ProjectionNamesCommand::class, [
+            'projectionContextPool' => $this->objectManager->create(ProjectionContextPool::class, [
+                'projectionContexts' => [
+                    'user_projection' => [
+                        'projectionManager' => $this->objectManager->get(MySqlProjectionManager::class),
+                        'projection' => $this->objectManager->create(UserProjection::class),
+                        'readModel' => $this->objectManager->get(UserReadModel::class),
+                    ]
+                ]
+            ])
+        ]);
         $this->tester = new CommandTester($this->command);
         
     }
@@ -37,29 +47,17 @@ class ProjectionNamesCommandTest extends TestCase
      */
     public function can_get_projection_names()
     {
-        /** @var ProjectionContextPool $projectionPool */
-        $projectionPool = $this->objectManager->create(ProjectionContextPool::class, [
-            'projectionContexts' => [
-                'user_projection' => [
-                    'projectionManager' => $this->objectManager->get(MySqlProjectionManager::class),
-                    'projection' => $this->objectManager->create(UserProjection::class),
-                    'readModel' => $this->objectManager->get(UserReadModel::class),
-                ]
-            ]
-        ]);
-        $this->objectManager->addSharedInstance($projectionPool, ProjectionContextPool::class);
-
         $this->tester->execute([]);
         $output = $this->tester->getDisplay();
 
         $this->assertEquals(
 <<<OUTPUT
 Projection names
-+-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
-| name      | projection                                                                        | projector                                                        |
-+-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
-| jira_user | ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection | Prooph\EventStore\Pdo\Projection\PdoEventStoreReadModelProjector |
-+-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
++-----------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
+| name            | projection                                                                        | projector                                                        |
++-----------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
+| user_projection | ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection | Prooph\EventStore\Pdo\Projection\PdoEventStoreReadModelProjector |
++-----------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
 
 OUTPUT
 

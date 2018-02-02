@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure;
 
-use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Api\UserRepositoryInterface;
 use Prooph\EventSourcing\Aggregate\AggregateRepository;
 use Prooph\EventSourcing\Aggregate\AggregateType;
 use Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator;
@@ -11,7 +10,7 @@ use Prooph\EventStore\EventStore;
 use Prooph\SnapshotStore\SnapshotStore;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\User;
 
-class UserRepository extends AggregateRepository implements UserRepositoryInterface
+class UserRepository extends AggregateRepository
 {
     public function __construct(EventStore $eventStore, SnapshotStore $snapshotStore)
     {
@@ -25,12 +24,12 @@ class UserRepository extends AggregateRepository implements UserRepositoryInterf
         );
     }
 
-    public function save(\ReachDigital\ProophEventStore\Test\Integration\Fixtures\Api\Data\UserInterface $user): void
+    public function save(User $user): void
     {
         $this->saveAggregateRoot($user);
     }
 
-    public function get(string $id) :? \ReachDigital\ProophEventStore\Test\Integration\Fixtures\Api\Data\UserInterface
+    public function get(string $id) :? User
     {
         return $this->getAggregateRoot($id);
     }
