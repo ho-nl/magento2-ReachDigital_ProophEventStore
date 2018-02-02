@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ReachDigital\ProophEventStore\Console\Command;
 
+use Prooph\EventStore\Projection\Projector;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -31,8 +32,12 @@ class ProjectionRunCommand extends AbstractProjectionCommand
             )
         );
 
-        $projector = $this->projectionContext->projection()->project($this->projectionContext->projector());
-        $projector->run($keepRunning);
+        $projector = $this->projectionContext->projector([Projector::OPTION_PCNTL_DISPATCH => true]);
+        $projection = $this->projectionContext->projection()->project($projector);
+        pcntl_signal(SIGQUIT, function () {
+            $this->projectionContext->projector()->stop();
+        });
+        $projection->run($keepRunning);
         $output->writeln(sprintf('<action>Projection <highlight>%s</highlight> completed.</action>', $this->projectionName));
     }
 }

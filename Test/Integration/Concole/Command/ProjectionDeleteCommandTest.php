@@ -15,7 +15,7 @@ use ReachDigital\ProophJira\Projection\UserProjection;
 use ReachDigital\ProophJira\Projection\UserReadModel;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ProjectionStopCommandTest extends TestCase
+class ProjectionDeleteCommandTest extends TestCase
 {
     /** @var ObjectManager */
     private $objectManager;
