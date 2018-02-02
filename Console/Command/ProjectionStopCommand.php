@@ -20,6 +20,6 @@ class ProjectionStopCommand extends AbstractProjectionCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln(sprintf('<action>Stopping projection <highlight>%s</highlight></action>', $this->projectionName));
-        $this->projectionManager->stopProjection($this->projectionName);
+        $this->projectionContext->projectionManager()->stopProjection($this->projectionName);
     }
 }

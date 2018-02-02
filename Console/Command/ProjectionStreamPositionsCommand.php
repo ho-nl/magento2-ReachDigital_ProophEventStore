@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProjectionStreamPositionsCommand extends AbstractProjectionCommand
 {
-    protected function configure()
+    protected function configure(): void
     {
         parent::configure();
         $this
@@ -22,7 +22,10 @@ class ProjectionStreamPositionsCommand extends AbstractProjectionCommand
     {
         $output->writeln('<action>All stream positions on this projection manager:</action>');
         $table = (new Table($output))->setHeaders(['Stream', 'Position']);
-        foreach ($this->projectionManager->fetchProjectionStreamPositions($this->projectionName) as $stream => $position) {
+
+        $streamPositions = $this->projectionContext->projectionManager()
+            ->fetchProjectionStreamPositions($this->projectionName);
+        foreach ($streamPositions as $stream => $position) {
             $table->addRow([$stream, $position]);
         }
         $table->render();
