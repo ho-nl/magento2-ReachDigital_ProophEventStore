@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace ReachDigital\ProophEventStore\Console\Command;
 
+use ReachDigital\ProophEventStore\Infrastructure\ProjectionManagerPool;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -20,6 +21,19 @@ class ProjectionNamesCommand extends Command
     private const OPTION_LIMIT = 'limit';
     private const OPTION_OFFSET = 'offset';
     private const OPTION_MANAGER = 'manager';
+    /**
+     * @var ProjectionManagerPool
+     */
+    private $projectionManagerPool;
+
+    public function __construct(
+        ProjectionManagerPool $projectionManagerPool,
+        $name = null
+    ) {
+        parent::__construct($name);
+        $this->projectionManagerPool = $projectionManagerPool;
+    }
+
 
     protected function configure()
     {
@@ -37,12 +51,8 @@ class ProjectionNamesCommand extends Command
     {
         $this->formatOutput($output);
 
-        $managerNames = array_keys($this->getContainer()->getParameter('prooph_event_store.projection_managers'));
-
         if ($requestedManager = $input->getOption(self::OPTION_MANAGER)) {
-            $managerNames = array_filter($managerNames, function (string $managerName) use ($requestedManager) {
-                return $managerName === $requestedManager;
-            });
+            $projectionManager = $this->projectionManagerPool->get($requestedManager);
         }
 
         $filter = $input->getArgument(self::ARGUMENT_FILTER);
@@ -63,7 +73,6 @@ class ProjectionNamesCommand extends Command
         $names = [];
         $offset = (int) $input->getOption(self::OPTION_OFFSET);
         $limit = (int) $input->getOption(self::OPTION_LIMIT);
-        $maxNeeded = $offset + $limit;
 
         foreach ($managerNames as $managerName) {
             $projectionManager = $this->getContainer()->get('prooph_event_store.projection_manager.' . $managerName);
@@ -76,10 +85,6 @@ class ProjectionNamesCommand extends Command
 
             foreach ($projectionNames as $projectionName) {
                 $names[] = [$managerName, $projectionName];
-            }
-
-            if (count($names) >= $maxNeeded) {
-                break;
             }
         }
 

@@ -6,7 +6,6 @@ namespace ReachDigital\ProophEventStore\Console\Command;
 
 use ReachDigital\ProophEventStore\Exception\RuntimeException;
 use ReachDigital\ProophEventStore\Api\ProjectionInterface;
-use ReachDigital\ProophEventStore\Api\ReadModelProjectionInterface;
 use Prooph\EventStore\Projection\ProjectionManager;
 use Prooph\EventStore\Projection\Projector;
 use Prooph\EventStore\Projection\ReadModelProjector;
@@ -42,9 +41,16 @@ abstract class AbstractProjectionCommand extends Command
     protected $projector;
 
     /**
-     * @var ProjectionInterface|ReadModelProjectionInterface
+     * @var ProjectionInterface|ProjectionInterface
      */
     protected $projection;
+
+    public function __construct(
+        $name = null
+    ) {
+        parent::__construct($name);
+    }
+
 
     protected function configure()
     {
@@ -71,7 +77,7 @@ abstract class AbstractProjectionCommand extends Command
         }
         $this->projection = $container->get(sprintf('%s.%s', ProophEventStoreExtension::TAG_PROJECTION, $this->projectionName));
 
-        if ($this->projection instanceof ReadModelProjectionInterface) {
+        if ($this->projection instanceof ProjectionInterface) {
             if (! $container->has(sprintf('%s.%s.read_model', ProophEventStoreExtension::TAG_PROJECTION, $this->projectionName))) {
                 throw new RuntimeException(sprintf('ReadModel for "%s" not found', $this->projectionName));
             }
