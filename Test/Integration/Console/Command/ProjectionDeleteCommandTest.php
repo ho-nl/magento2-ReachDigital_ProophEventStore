@@ -8,14 +8,14 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Prooph\EventStore\Pdo\Projection\MySqlProjectionManager;
+use ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand;
 use ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand;
-use ReachDigital\ProophEventStore\Console\Command\ProjectionStreamPositionsCommand;
 use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
-use ReachDigital\ProophJira\Projection\UserProjection;
-use ReachDigital\ProophJira\Projection\UserReadModel;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserReadModel;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ProjectionStreamPositionsCommandTest extends TestCase
+class ProjectionDeleteCommandTest extends TestCase
 {
     /** @var ObjectManager */
     private $objectManager;
@@ -26,7 +26,7 @@ class ProjectionStreamPositionsCommandTest extends TestCase
     protected function setUp() {
         $this->objectManager = Bootstrap::getObjectManager();
 
-        $command = $this->objectManager->create(ProjectionStreamPositionsCommand::class, [
+        $command = $this->objectManager->create(ProjectionDeleteCommand::class, [
             'projectionContextPool' => $this->objectManager->create(ProjectionContextPool::class, [
                 'projectionContexts' => [
                     'user_projection' => [
@@ -44,10 +44,11 @@ class ProjectionStreamPositionsCommandTest extends TestCase
     /**
      * @test
      */
-    public function should_run_user_projection_once()
+    public function should_delete_projection()
     {
         $this->tester->execute([
-            'projection-name' => 'user_projection'
+            'projection-name' => 'user_projection',
+            '--with-emitted-events' => true
         ]);
         $output = $this->tester->getDisplay();
         echo $output;

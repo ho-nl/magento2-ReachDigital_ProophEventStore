@@ -79,7 +79,6 @@ class ProjectionNamesCommand extends Command
         $offset = (int) $input->getOption(self::OPTION_OFFSET);
         $limit = (int) $input->getOption(self::OPTION_LIMIT);
 
-
         $names = array_map(function(ProjectionContext $projectionContext) {
             return [
                 'name' => $projectionContext->name(),

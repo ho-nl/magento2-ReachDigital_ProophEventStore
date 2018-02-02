@@ -8,14 +8,14 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Prooph\EventStore\Pdo\Projection\MySqlProjectionManager;
-use ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand;
 use ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand;
+use ReachDigital\ProophEventStore\Console\Command\ProjectionStreamPositionsCommand;
 use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
-use ReachDigital\ProophJira\Projection\UserProjection;
-use ReachDigital\ProophJira\Projection\UserReadModel;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserReadModel;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ProjectionDeleteCommandTest extends TestCase
+class ProjectionStreamPositionsCommandTest extends TestCase
 {
     /** @var ObjectManager */
     private $objectManager;
@@ -26,7 +26,7 @@ class ProjectionDeleteCommandTest extends TestCase
     protected function setUp() {
         $this->objectManager = Bootstrap::getObjectManager();
 
-        $command = $this->objectManager->create(ProjectionDeleteCommand::class, [
+        $command = $this->objectManager->create(ProjectionStreamPositionsCommand::class, [
             'projectionContextPool' => $this->objectManager->create(ProjectionContextPool::class, [
                 'projectionContexts' => [
                     'user_projection' => [
@@ -44,11 +44,10 @@ class ProjectionDeleteCommandTest extends TestCase
     /**
      * @test
      */
-    public function should_delete_projection()
+    public function should_run_user_projection_once()
     {
         $this->tester->execute([
-            'projection-name' => 'user_projection',
-            '--with-emitted-events' => true
+            'projection-name' => 'user_projection'
         ]);
         $output = $this->tester->getDisplay();
         echo $output;

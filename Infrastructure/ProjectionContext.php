@@ -9,7 +9,7 @@ use Prooph\EventStore\Projection\Projector;
 use Prooph\EventStore\Projection\ReadModel;
 use Prooph\EventStore\Projection\ReadModelProjector;
 use ReachDigital\ProophEventStore\Api\ProjectionInterface;
-use ReachDigital\ProophJira\Projection\UserReadModel;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserReadModel;
 
 class ProjectionContext
 {

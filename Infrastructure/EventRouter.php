@@ -6,7 +6,7 @@ namespace ReachDigital\ProophEventStore\Infrastructure;
 
 class EventRouter extends \Prooph\ServiceBus\Plugin\Router\EventRouter
 {
-    public function __construct(array $eventMap = null)
+    public function __construct(array $eventMap = [])
     {
         parent::__construct($this->formatEventMap($eventMap));
     }

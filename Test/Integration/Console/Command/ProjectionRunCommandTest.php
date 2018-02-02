@@ -8,13 +8,14 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Prooph\EventStore\Pdo\Projection\MySqlProjectionManager;
+use ReachDigital\ProophEventStore\Console\Command\ProjectionRunCommand;
 use ReachDigital\ProophEventStore\Console\Command\ProjectionStateCommand;
 use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
-use ReachDigital\ProophJira\Projection\UserProjection;
-use ReachDigital\ProophJira\Projection\UserReadModel;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserReadModel;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ProjectionStateCommandTest extends TestCase
+class ProjectionRunCommandTest extends TestCase
 {
     /** @var ObjectManager */
     private $objectManager;
@@ -28,7 +29,7 @@ class ProjectionStateCommandTest extends TestCase
     protected function setUp() {
         $this->objectManager = Bootstrap::getObjectManager();
 
-        $this->command = $this->objectManager->create(ProjectionStateCommand::class, [
+        $this->command = $this->objectManager->create(ProjectionRunCommand::class, [
             'projectionContextPool' => $this->objectManager->create(ProjectionContextPool::class, [
                 'projectionContexts' => [
                     'user_projection' => [
@@ -46,9 +47,12 @@ class ProjectionStateCommandTest extends TestCase
     /**
      * @test
      */
-    public function should_fetch_projection_state()
+    public function should_run_user_projection_once()
     {
-        $this->tester->execute(['projection-name' => 'user_projection']);
+        $this->tester->execute([
+            'projection-name' => 'user_projection',
+            '--run-once' => true
+        ]);
         $output = $this->tester->getDisplay();
         echo $output;
     }

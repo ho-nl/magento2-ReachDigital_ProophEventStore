@@ -17,14 +17,14 @@ namespace {
     use Prooph\ServiceBus\Plugin\Router\EventRouter;
     use Prooph\SnapshotStore\Pdo\PdoSnapshotStore;
 
-    use ReachDigital\ProophJira\Infrastructure\UserRepository;
-    use ReachDigital\ProophJira\Model\Command\ChangeEmail;
-    use ReachDigital\ProophJira\Model\Command\ChangeEmailHandler;
-    use ReachDigital\ProophJira\Model\Command\RegisterUser;
-    use ReachDigital\ProophJira\Model\Command\RegisterUserHandler;
-    use ReachDigital\ProophJira\Model\Event\EmailChanged;
-    use ReachDigital\ProophJira\Model\Event\UserRegistered;
-    use ReachDigital\ProophJira\Projection\UserProjector;
+    use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure\UserRepository;
+    use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Command\ChangeEmail;
+    use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Command\ChangeEmailHandler;
+    use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Command\RegisterUser;
+    use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Command\RegisterUserHandler;
+    use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Event\EmailChanged;
+    use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Event\UserRegistered;
+    use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjector;
 
     include "./vendor/autoload.php";
 

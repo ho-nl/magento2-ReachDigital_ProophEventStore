@@ -1,7 +1,7 @@
 <?php
 
 
-namespace ReachDigital\ProophEventStore\Test\Integration\Model;
+namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure;
 
 
 use Magento\TestFramework\Helper\Bootstrap;

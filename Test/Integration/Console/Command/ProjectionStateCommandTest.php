@@ -8,16 +8,19 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Prooph\EventStore\Pdo\Projection\MySqlProjectionManager;
-use ReachDigital\ProophEventStore\Console\Command\ProjectionResetCommand;
+use ReachDigital\ProophEventStore\Console\Command\ProjectionStateCommand;
 use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
-use ReachDigital\ProophJira\Projection\UserProjection;
-use ReachDigital\ProophJira\Projection\UserReadModel;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserReadModel;
 use Symfony\Component\Console\Tester\CommandTester;
 
-class ProjectionResetCommandTest extends TestCase
+class ProjectionStateCommandTest extends TestCase
 {
     /** @var ObjectManager */
     private $objectManager;
+
+    /** @var ProjectionStateCommand */
+    private $command;
 
     /** @var CommandTester */
     private $tester;
@@ -25,7 +28,7 @@ class ProjectionResetCommandTest extends TestCase
     protected function setUp() {
         $this->objectManager = Bootstrap::getObjectManager();
 
-        $command = $this->objectManager->create(ProjectionResetCommand::class, [
+        $this->command = $this->objectManager->create(ProjectionStateCommand::class, [
             'projectionContextPool' => $this->objectManager->create(ProjectionContextPool::class, [
                 'projectionContexts' => [
                     'user_projection' => [
@@ -36,18 +39,16 @@ class ProjectionResetCommandTest extends TestCase
                 ]
             ])
         ]);
-        $this->tester = new CommandTester($command);
+        $this->tester = new CommandTester($this->command);
 
     }
 
     /**
      * @test
      */
-    public function should_reset_projection()
+    public function should_fetch_projection_state()
     {
-        $this->tester->execute([
-            'projection-name' => 'user_projection'
-        ]);
+        $this->tester->execute(['projection-name' => 'user_projection']);
         $output = $this->tester->getDisplay();
         echo $output;
     }

@@ -1,7 +1,7 @@
 <?php
 
 
-namespace ReachDigital\ProophEventStore\Test\Integration\Model;
+namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure;
 
 
 use Magento\TestFramework\Helper\Bootstrap;
@@ -11,8 +11,8 @@ use Prooph\EventStore\Projection\ReadModelProjector;
 use ReachDigital\ProophEventStore\Api\ProjectionInterface;
 use ReachDigital\ProophEventStore\Infrastructure\ProjectionContext;
 use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
-use ReachDigital\ProophJira\Projection\UserProjection;
-use ReachDigital\ProophJira\Projection\UserReadModel;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserReadModel;
 
 class ProjectionPoolTest extends TestCase
 {

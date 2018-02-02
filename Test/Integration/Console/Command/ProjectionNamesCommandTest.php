@@ -10,8 +10,8 @@ use PHPUnit\Framework\TestCase;
 use Prooph\EventStore\Pdo\Projection\MySqlProjectionManager;
 use ReachDigital\ProophEventStore\Console\Command\ProjectionNamesCommand;
 use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
-use ReachDigital\ProophJira\Projection\UserProjection;
-use ReachDigital\ProophJira\Projection\UserReadModel;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection;
+use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserReadModel;
 use Symfony\Component\Console\Tester\CommandTester;
 
 class ProjectionNamesCommandTest extends TestCase
@@ -55,11 +55,11 @@ class ProjectionNamesCommandTest extends TestCase
         $this->assertEquals(
 <<<OUTPUT
 Projection names
-+-----------+---------------------------------------------------+------------------------------------------------------------------+
-| name      | projection                                        | projector                                                        |
-+-----------+---------------------------------------------------+------------------------------------------------------------------+
-| jira_user | ReachDigital\ProophJira\Projection\UserProjection | Prooph\EventStore\Pdo\Projection\PdoEventStoreReadModelProjector |
-+-----------+---------------------------------------------------+------------------------------------------------------------------+
++-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
+| name      | projection                                                                        | projector                                                        |
++-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
+| jira_user | ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection | Prooph\EventStore\Pdo\Projection\PdoEventStoreReadModelProjector |
++-----------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
 
 OUTPUT
 
