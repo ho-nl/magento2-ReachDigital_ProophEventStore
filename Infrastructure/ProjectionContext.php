@@ -72,4 +72,8 @@ class ProjectionContext
     public function projection(): ProjectionInterface {
         return $this->projection;
     }
+
+    public function projectionManager(): ProjectionManager {
+        return $this->projectionManager;
+    }
 }
