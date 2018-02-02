@@ -69,6 +69,10 @@ class ProjectionContext
         return $this->name;
     }
 
+    public function readModel(): ReadModel {
+        return $this->readModel;
+    }
+
     public function projection(): ProjectionInterface {
         return $this->projection;
     }

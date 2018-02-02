@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace ReachDigital\ProophEventStore\Console\Command;
 
-use ReachDigital\ProophEventStore\Exception\RuntimeException;
-use ReachDigital\ProophEventStore\Api\ProjectionInterface;
-use Prooph\EventStore\Projection\ProjectionManager;
-use Prooph\EventStore\Projection\Projector;
-use Prooph\EventStore\Projection\ReadModelProjector;
+use ReachDigital\ProophEventStore\Infrastructure\ProjectionContext;
+use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -21,9 +18,9 @@ abstract class AbstractProjectionCommand extends Command
     protected const ARGUMENT_PROJECTION_NAME = 'projection-name';
 
     /**
-     * @var ProjectionManager
+     * @var ProjectionContextPool
      */
-    protected $projectionManager;
+    protected $projectionContextPool;
 
     /**
      * @var string
@@ -31,24 +28,16 @@ abstract class AbstractProjectionCommand extends Command
     protected $projectionName;
 
     /**
-     * @var ReadModel|null
+     * @var ProjectionContext
      */
-    protected $readModel;
-
-    /**
-     * @var ReadModelProjector|Projector
-     */
-    protected $projector;
-
-    /**
-     * @var ProjectionInterface|ProjectionInterface
-     */
-    protected $projection;
+    protected $projectionContext;
 
     public function __construct(
+        ProjectionContextPool $projectionContextPool,
         $name = null
     ) {
         parent::__construct($name);
+        $this->projectionContextPool = $projectionContextPool;
     }
 
 
@@ -64,38 +53,11 @@ abstract class AbstractProjectionCommand extends Command
         $this->formatOutput($output);
 
         $this->projectionName = $input->getArgument(static::ARGUMENT_PROJECTION_NAME);
+        $this->projectionContext = $this->projectionContextPool->get($this->projectionName);
 
-        $container = $this->getContainer();
-
-        if (! $container->has(sprintf('%s.%s.projection_manager', ProophEventStoreExtension::TAG_PROJECTION, $this->projectionName))) {
-            throw new RuntimeException(sprintf('ProjectionManager for "%s" not found', $this->projectionName));
-        }
-        $this->projectionManager = $container->get(sprintf('%s.%s.projection_manager', ProophEventStoreExtension::TAG_PROJECTION, $this->projectionName));
-
-        if (! $container->has(sprintf('%s.%s', ProophEventStoreExtension::TAG_PROJECTION, $this->projectionName))) {
-            throw new RuntimeException(sprintf('Projection "%s" not found', $this->projectionName));
-        }
-        $this->projection = $container->get(sprintf('%s.%s', ProophEventStoreExtension::TAG_PROJECTION, $this->projectionName));
-
-        if ($this->projection instanceof ProjectionInterface) {
-            if (! $container->has(sprintf('%s.%s.read_model', ProophEventStoreExtension::TAG_PROJECTION, $this->projectionName))) {
-                throw new RuntimeException(sprintf('ReadModel for "%s" not found', $this->projectionName));
-            }
-            $this->readModel = $container->get(sprintf('%s.%s.read_model', ProophEventStoreExtension::TAG_PROJECTION, $this->projectionName));
-
-            $this->projector = $this->projectionManager->createReadModelProjection($this->projectionName, $this->readModel);
-        }
-
-        if ($this->projection instanceof ProjectionInterface) {
-            $this->projector = $this->projectionManager->createProjection($this->projectionName);
-        }
-
-        if (null === $this->projector) {
-            throw new RuntimeException('Projection was not created');
-        }
         $output->writeln(sprintf('<header>Initialized projection "%s"</header>', $this->projectionName));
         try {
-            $state = $this->projectionManager->fetchProjectionStatus($this->projectionName)->getValue();
+            $state = $this->projectionContext->projectionManager()->fetchProjectionStatus($this->projectionName)->getValue();
         } catch (\Prooph\EventStore\Exception\RuntimeException $e) {
             $state = 'unknown';
         }

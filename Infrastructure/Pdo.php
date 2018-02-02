@@ -23,6 +23,7 @@ class Pdo extends \PDO
         $dsn = $this->_dsn($connection->getConfig());
 
         parent::__construct($dsn, $conf['username'], $conf['password'], $conf['options']);
+        $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
     /**
