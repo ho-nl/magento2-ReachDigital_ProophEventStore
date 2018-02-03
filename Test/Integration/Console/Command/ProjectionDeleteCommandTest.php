@@ -9,6 +9,7 @@ use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Prooph\EventStore\Pdo\Projection\MySqlProjectionManager;
 use ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand;
+use ReachDigital\ProophEventStore\Console\Command\ProjectionRunCommand;
 use ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand;
 use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection;
@@ -26,7 +27,7 @@ class ProjectionDeleteCommandTest extends TestCase
     protected function setUp() {
         $this->objectManager = Bootstrap::getObjectManager();
 
-        $command = $this->objectManager->create(ProjectionDeleteCommand::class, [
+        $args = [
             'projectionContextPool' => $this->objectManager->create(ProjectionContextPool::class, [
                 'projectionContexts' => [
                     'user_projection' => [
@@ -36,7 +37,15 @@ class ProjectionDeleteCommandTest extends TestCase
                     ]
                 ]
             ])
+        ];
+
+        $runCommand = $this->objectManager->create(ProjectionRunCommand::class, $args);
+        (new CommandTester($runCommand))->execute([
+            'projection-name' => 'user_projection',
+            '--run-once' => true
         ]);
+
+        $command = $this->objectManager->create(ProjectionDeleteCommand::class, $args);
         $this->tester = new CommandTester($command);
 
     }
