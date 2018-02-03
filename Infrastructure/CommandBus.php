@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 
 namespace ReachDigital\ProophEventStore\Infrastructure;
 
@@ -14,5 +14,13 @@ class CommandBus extends \Prooph\ServiceBus\CommandBus
     ) {
         parent::__construct($actionEventEmitter);
         $commandRouter->attachToMessageBus($this);
+        $this->pluginHook();
+    }
+
+    /**
+     * Allows us to attach additional plugins to the CommandBus
+     */
+    public function pluginHook()
+    {
     }
 }
