@@ -4,10 +4,12 @@
 namespace ReachDigital\ProophEventStore\Test\Integration\Command;
 
 use Magento\TestFramework\Helper\Bootstrap;
+use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Prooph\ServiceBus\Plugin\Router\CommandRouter;
 use ReachDigital\ProophEventStore\Infrastructure\CommandBus;
 use ReachDigital\ProophEventStore\Infrastructure\EventBus;
+use ReachDigital\ProophEventStore\ProophEventStoreContext;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure\UserRepository;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Command\ChangeEmail;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Command\RegisterUser;
@@ -17,12 +19,17 @@ use ReachDigital\ProophEventStore\Test\Integration\Fixtures\User;
 
 class RegisterUserTest extends TestCase
 {
-    /** @var \Magento\Framework\ObjectManagerInterface */
+    /** @var ObjectManager */
     private $objectManager;
 
     protected function setUp()
     {
         $this->objectManager = Bootstrap::getObjectManager();
+
+        /** @var CommandRouter $router */
+        $router = $this->objectManager->get(CommandRouter::class);
+        $router->route(RegisterUser::class)->to($this->objectManager->get(RegisterUserHandler::class));
+        $router->route(ChangeEmail::class)->to($this->objectManager->get(ChangeEmailHandler::class));
     }
 
     //<type name="Prooph\ServiceBus\Plugin\Router\CommandRouter">
@@ -33,24 +40,17 @@ class RegisterUserTest extends TestCase
     //        </argument>
     //    </arguments>
     //</type>
-    private function commandBusInstance(): CommandBus
-    {
-        return $this->objectManager->create(CommandBus::class, [
-            'commandRouter' => $this->objectManager->create(CommandRouter::class, [
-                'messageMap' => [
-                    RegisterUser::class => $this->objectManager->get(RegisterUserHandler::class),
-                    ChangeEmail::class => $this->objectManager->get(ChangeEmailHandler::class)
-                ]
-            ])
-        ]);
-    }
+
 
     /**
      * @test
      */
     public function command_and_event_bus_are_correctly_instantiated()
     {
-        $commandBus = $this->commandBusInstance();
+        /** @var ProophEventStoreContext $es */
+        $es = $this->objectManager->get(ProophEventStoreContext::class);
+
+        $commandBus = $es->commandBus();
         $this->assertInstanceOf(CommandBus::class, $commandBus);
 
         $commandBusEventsRefl = (new \ReflectionProperty($commandBus, 'events'));
@@ -76,18 +76,18 @@ class RegisterUserTest extends TestCase
      */
     public function user_register_command_can_be_fired()
     {
-        $commandBus = $this->commandBusInstance();
-        $eventBus = $this->objectManager->get(EventBus::class);
+        /** @var ProophEventStoreContext $es */
+        $es = $this->objectManager->get(ProophEventStoreContext::class);
 
         $userId = uniqid();
-        $commandBus->dispatch(new RegisterUser([
+        $es->commandBus()->dispatch(new RegisterUser([
             'id' => $userId,
             'email' => 'random@email.com',
             'password' => 'test'
         ]));
 
         for ($i = 0; $i < 5; $i++) {
-            $commandBus->dispatch(new ChangeEmail([
+            $es->commandBus()->dispatch(new ChangeEmail([
                 'email' => 'random' . $i . '@email.com',
                 'id' => $userId
             ]));

@@ -28,5 +28,11 @@ class EventBus extends \Prooph\ServiceBus\EventBus
             'actionEventEmitter' => $actionEventEmitter
         ]);
         $eventPublisher->attachToEventStore($actionEventEmitterEventStore);
+        $this->construct();
+    }
+
+    public function construct(): void
+    {
+        //Magento plugin hook
     }
 }

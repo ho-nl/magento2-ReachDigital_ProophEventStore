@@ -15,8 +15,6 @@
         </arguments>
     </type>
 
-    <preference for="Prooph\ServiceBus\Plugin\Router\EventRouter" type="ReachDigital\ProophEventStore\Infrastructure\EventRouter"/>
-
     <preference for="Prooph\ServiceBus\CommandBus" type="ReachDigital\ProophEventStore\Infrastructure\CommandBus"/>
     <type name="ReachDigital\ProophEventStore\Infrastructure\CommandBus">
         <arguments>
@@ -25,7 +23,15 @@
     </type>
 
     <preference for="Prooph\ServiceBus\EventBus" type="ReachDigital\ProophEventStore\Infrastructure\EventBus" />
+    <preference for="Prooph\ServiceBus\Plugin\Router\EventRouter" type="ReachDigital\ProophEventStore\Infrastructure\EventRouter"/>
     <type name="ReachDigital\ProophEventStore\Infrastructure\EventBus">
+        <arguments>
+            <argument name="actionEventEmitter" xsi:type="object" shared="false">Prooph\Common\Event\ProophActionEventEmitter</argument>
+        </arguments>
+    </type>
+
+    <preference for="Prooph\ServiceBus\QueryBus" type="ReachDigital\ProophEventStore\Infrastructure\QueryBus" />
+    <type name="ReachDigital\ProophEventStore\Infrastructure\QueryBus">
         <arguments>
             <argument name="actionEventEmitter" xsi:type="object" shared="false">Prooph\Common\Event\ProophActionEventEmitter</argument>
         </arguments>
@@ -35,6 +41,7 @@
     <preference for="Prooph\Common\Messaging\MessageFactory" type="Prooph\Common\Messaging\FQCNMessageFactory"/>
     <preference for="Prooph\EventStore\Pdo\PersistenceStrategy" type="Prooph\EventStore\Pdo\PersistenceStrategy\MySqlSingleStreamStrategy"/>
     <preference for="Prooph\SnapshotStore\SnapshotStore" type="Prooph\SnapshotStore\Pdo\PdoSnapshotStore"/>
+    <preference for="Prooph\EventSourcing\Aggregate\AggregateTranslator" type="Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator"/>
 
     <type name="Prooph\EventStore\Pdo\MySqlEventStore">
         <arguments>

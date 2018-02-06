@@ -30,8 +30,7 @@ CREATE TABLE `$tableName` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 EOT;
-        $statement = $this->connection->prepare($sql);
-        $statement->execute();
+        $this->connection->query($sql);
     }
     public function isInitialized(): bool
     {
