@@ -11,15 +11,16 @@ use MabeEnum\EnumSerializableTrait;
 use ReachDigital\ProophEventStore\Api\Model\EnumInterface;
 use ReachDigital\ProophEventStore\Api\Model\ValueObjectInterface;
 
-abstract class Enum extends \MabeEnum\Enum implements EnumInterface
+abstract class EnumType extends \MabeEnum\Enum implements EnumInterface
 {
     use EnumSerializableTrait;
 
-    public function sameValueAs(ValueObjectInterface $object): bool
-    {
-        return $this->is($object);
-    }
-
+    /**
+     * @param string $string
+     * @return EnumType
+     * @throws \LogicException
+     * @throws \InvalidArgumentException
+     */
     public static function fromString(string $string): self
     {
         return static::byName($string);
@@ -27,6 +28,11 @@ abstract class Enum extends \MabeEnum\Enum implements EnumInterface
 
     public function toString(): string
     {
-        return $this->getName();
+        return $this->__toString();
+    }
+
+    public function sameValueAs(ValueObjectInterface $object): bool
+    {
+        return $this->is($object);
     }
 }
