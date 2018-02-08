@@ -39,7 +39,7 @@
 
     <preference for="Prooph\EventStore\EventStore" type="Prooph\EventStore\Pdo\MySqlEventStore"/>
     <preference for="Prooph\Common\Messaging\MessageFactory" type="Prooph\Common\Messaging\FQCNMessageFactory"/>
-    <preference for="Prooph\EventStore\Pdo\PersistenceStrategy" type="Prooph\EventStore\Pdo\PersistenceStrategy\MySqlSingleStreamStrategy"/>
+    <preference for="Prooph\EventStore\Pdo\PersistenceStrategy" type="ReachDigital\ProophEventStore\PdoEventStore\PersistenceStrategy\MySqlSingleStreamStrategy"/>
     <preference for="Prooph\SnapshotStore\SnapshotStore" type="Prooph\SnapshotStore\Pdo\PdoSnapshotStore"/>
     <preference for="Prooph\EventSourcing\Aggregate\AggregateTranslator" type="Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator"/>
 
