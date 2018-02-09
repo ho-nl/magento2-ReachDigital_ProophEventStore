@@ -29,9 +29,9 @@ abstract class BooleanType implements ValueObjectInterface
         return new static((bool) $bool);
     }
 
-    private function __construct(int $int)
+    private function __construct(bool $bool)
     {
-        $this->value = $int;
+        $this->value = $bool;
     }
 
     public function toString(): string
