@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright (c) Reach Digital (https://www.reachdigital.nl/)
  * See README.md for license details.
