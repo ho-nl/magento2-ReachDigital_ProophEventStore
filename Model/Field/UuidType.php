@@ -14,6 +14,7 @@ use ReachDigital\ProophEventStore\Api\Model\ValueObjectInterface;
 
 abstract class UuidType implements ValueObjectInterface
 {
+    protected static $fakeUuidPrefix;
     /**
      * @var UuidInterface
      */
@@ -26,10 +27,13 @@ abstract class UuidType implements ValueObjectInterface
 
     public static function generateFakeFromString(string $string): self
     {
+        if (! self::$fakeUuidPrefix) {
+            self::$fakeUuidPrefix = static::class;
+        }
         if (self::isValid($string)) {
             return self::fromString($string);
         }
-        return self::fromString(md5(static::class . $string));
+        return self::fromString(md5(self::$fakeUuidPrefix . $string));
     }
 
     public static function generate(): self

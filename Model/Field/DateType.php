@@ -8,9 +8,10 @@ declare(strict_types=1);
 namespace ReachDigital\ProophEventStore\Model\Field;
 
 
+use Prooph\EventStore\Util\Assertion;
 use ReachDigital\ProophEventStore\Api\Model\ValueObjectInterface;
 
-abstract class StringType implements ValueObjectInterface
+class DateType implements ValueObjectInterface
 {
     /**
      * @var string
@@ -23,12 +24,14 @@ abstract class StringType implements ValueObjectInterface
      */
     public static function fromString(string $value): self
     {
-        return new static($value);
+        Assertion::date($value, \DateTime::ATOM);
+        $date = new \DateTime($value, new \DateTimeZone('utc'));
+        return new static($date);
     }
 
-    private function __construct(string $value)
+    private function __construct(\DateTime $date)
     {
-        $this->value = $value;
+        $this->value = $date;
     }
 
     public function toString(): string
@@ -38,11 +41,11 @@ abstract class StringType implements ValueObjectInterface
 
     public function __toString(): string
     {
-        return $this->value;
+        return $this->value->format(\DateTime::ATOM);
     }
 
     /**
-     * @param ValueObjectInterface|StringType $other
+     * @param ValueObjectInterface|DateType $other
      * @return bool
      */
     public function sameValueAs(ValueObjectInterface $other): bool
