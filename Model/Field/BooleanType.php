@@ -23,7 +23,7 @@ abstract class BooleanType implements ValueObjectInterface
      * @return static
      * @throws \Assert\AssertionFailedException
      */
-    public static function fromString($bool)
+    public static function fromString(string $bool)
     {
         Assertion::range((int) $bool, 0, 1);
         return new static((bool) $bool);
