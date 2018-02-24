@@ -11,7 +11,7 @@
       "registration.php"
     ],
     "psr-4": {
-      "ReachDigital\\ProophEventStore\\": ""
+      "ReachDigital\\ProophEventStore\\": "src/"
     }
   }
 }
