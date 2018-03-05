@@ -26,21 +26,7 @@ class RegisterUserTest extends TestCase
     protected function setUp()
     {
         $this->objectManager = Bootstrap::getObjectManager();
-
-        /** @var CommandRouter $router */
-        $router = $this->objectManager->get(CommandRouter::class);
-        $router->route(RegisterUser::class)->to($this->objectManager->get(RegisterUserHandler::class));
-        $router->route(ChangeEmail::class)->to($this->objectManager->get(ChangeEmailHandler::class));
     }
-
-    //<type name="Prooph\ServiceBus\Plugin\Router\CommandRouter">
-    //    <arguments>
-    //        <argument name="messageMap" xsi:type="array">
-    //            <item name="ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Command\RegisterUser" xsi:type="object">ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Handler\RegisterUserHandler</item>
-    //            <item name="ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Command\ChangeEmail" xsi:type="object">ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Handler\ChangeEmailHandler</item>
-    //        </argument>
-    //    </arguments>
-    //</type>
 
 
     /**
@@ -68,7 +54,10 @@ class RegisterUserTest extends TestCase
         $eventBusEventsRefl->setAccessible(true);
         $eventBusEvents = $eventBusEventsRefl->getValue($eventBus);
 
-        $this->assertFalse($commandBusEvents === $eventBusEvents, 'CommandBus and EventBus should not have the same instance of the ActionEventEmitter');
+        $this->assertFalse(
+            $commandBusEvents === $eventBusEvents,
+            'CommandBus and EventBus should not have the same instance of the ActionEventEmitter'
+        );
 
     }
 
@@ -79,6 +68,11 @@ class RegisterUserTest extends TestCase
     {
         /** @var ProophEventStoreContext $es */
         $es = $this->objectManager->get(ProophEventStoreContext::class);
+
+        /** @var CommandRouter $router */
+        $cr = $es->commandBus()->commandRouter();
+        $cr->route(RegisterUser::class)->to($this->objectManager->get(RegisterUserHandler::class));
+        $cr->route(ChangeEmail::class)->to($this->objectManager->get(ChangeEmailHandler::class));
 
         $userId = uniqid();
         $es->commandBus()->dispatch(new RegisterUser([
