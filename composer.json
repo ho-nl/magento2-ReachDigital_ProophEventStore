@@ -2,7 +2,14 @@
   "name": "reach-digital/magento2-prooph-event-store",
   "description": "Reach Digital Prooph bridge",
   "require": {
-    "php": "~7.1.0"
+    "php": "~7.1.0",
+    "prooph/service-bus": "^6.1",
+    "prooph/event-sourcing": "^5.2",
+    "prooph/event-store": "^7.3",
+    "prooph/pdo-event-store": "^1.5",
+    "prooph/event-store-bus-bridge": "^3.0",
+    "prooph/snapshotter": "^2.0",
+    "prooph/pdo-snapshot-store": "^1.3"
   },
   "type": "magento2-module",
   "license": "BSD-2-Clause",
