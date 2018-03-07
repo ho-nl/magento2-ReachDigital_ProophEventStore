@@ -8,6 +8,7 @@ use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Prooph\ServiceBus\Plugin\Router\CommandRouter;
+use Ramsey\Uuid\Uuid;
 use ReachDigital\ProophEventStore\Infrastructure\CommandBus;
 use ReachDigital\ProophEventStore\Infrastructure\EventBus;
 use ReachDigital\ProophEventStore\ProophEventStoreContext;
@@ -54,8 +55,8 @@ class RegisterUserTest extends TestCase
         $eventBusEventsRefl->setAccessible(true);
         $eventBusEvents = $eventBusEventsRefl->getValue($eventBus);
 
-        $this->assertFalse(
-            $commandBusEvents === $eventBusEvents,
+        $this->assertNotSame(
+            $commandBusEvents, $eventBusEvents,
             'CommandBus and EventBus should not have the same instance of the ActionEventEmitter'
         );
 
@@ -74,9 +75,9 @@ class RegisterUserTest extends TestCase
         $cr->route(RegisterUser::class)->to($this->objectManager->get(RegisterUserHandler::class));
         $cr->route(ChangeEmail::class)->to($this->objectManager->get(ChangeEmailHandler::class));
 
-        $userId = uniqid();
+        $userId = Uuid::uuid4();
         $es->commandBus()->dispatch(new RegisterUser([
-            'id' => $userId,
+            'id' => $userId->toString(),
             'email' => 'random@email.com',
             'password' => 'test'
         ]));
@@ -90,7 +91,7 @@ class RegisterUserTest extends TestCase
 
         /** @var UserRepository $userRepository */
         $userRepository = $this->objectManager->get(UserRepository::class);
-        $user = $userRepository->get($userId);
+        $user = $userRepository->get($userId->toString());
 
         $this->assertInstanceOf(User::class, $user);
     }
