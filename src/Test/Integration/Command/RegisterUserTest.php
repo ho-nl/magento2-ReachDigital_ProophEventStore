@@ -85,7 +85,7 @@ class RegisterUserTest extends TestCase
         for ($i = 0; $i < 5; $i++) {
             $es->commandBus()->dispatch(new ChangeEmail([
                 'email' => 'random' . $i . '@email.com',
-                'id' => $userId
+                'id' => $userId->toString()
             ]));
         }
 
