@@ -27,7 +27,7 @@ class StreamNameFactory
 
     public function create(string $streamNameStr): StreamName
     {
-        $streamName = new StreamName($streamNameStr);
+        $streamName = new StreamName('event_stream_'.$streamNameStr);
         if (! $this->eventStore->hasStream($streamName)) {
             $this->eventStore->create(new Stream($streamName, new \ArrayIterator()));
         }

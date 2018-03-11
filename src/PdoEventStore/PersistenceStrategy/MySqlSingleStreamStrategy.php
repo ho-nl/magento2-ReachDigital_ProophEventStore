@@ -84,7 +84,7 @@ EOT;
      */
     public function generateTableName(StreamName $streamName): string
     {
-        $tableName = 'event_stream_' . $streamName->toString();
+        $tableName = $streamName->toString();
         Assertion::regex($tableName, '/^[a-zA-Z0-9_]+$/');
         Assertion::maxLength($tableName, 64);
         return $tableName;
