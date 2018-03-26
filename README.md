@@ -7,7 +7,7 @@ Integration with Prooph software and Magento 2's DI.
 To use the Prooph components in your application, use:
 https://github.com/ho-nl/magento2-ProophEventStore/blob/master/src/ProophEventStoreContext.php
 
-```
+```php
 $this->proophEventStoreContext->commandBus()->dispatch($command);
 $this->proophEventStoreContext->eventBus()->dispatch($event);
 $this->proophEventStoreContext->queryBus()->dispatch($query)->then(function($result){
