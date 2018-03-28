@@ -1,15 +1,14 @@
 <?php
-declare(strict_types=1);
 /**
  * Copyright (c) Reach Digital (https://www.reachdigital.nl/)
  * See README.md for license details.
  */
 
+declare(strict_types=1);
+
 namespace ReachDigital\ProophEventStore\Infrastructure;
 
-
 use Prooph\EventStore\EventStore;
-use Prooph\EventStore\Stream;
 use Prooph\EventStore\StreamName;
 
 class StreamNameFactory
@@ -27,10 +26,8 @@ class StreamNameFactory
 
     public function create(string $streamNameStr): StreamName
     {
-        $streamName = new StreamName('event_stream_'.$streamNameStr);
-        if (! $this->eventStore->hasStream($streamName)) {
-            $this->eventStore->create(new Stream($streamName, new \ArrayIterator()));
-        }
+        $streamName = new StreamName('event_stream_' . $streamNameStr);
+
         return $streamName;
     }
 }
