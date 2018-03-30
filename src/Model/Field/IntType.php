@@ -23,7 +23,7 @@ abstract class IntType implements ValueObjectInterface
      * @return IntType
      * @throws \Assert\AssertionFailedException
      */
-    protected function fromString(string $int): self
+    public static function fromString(string $int): self
     {
         Assertion::integerish($int);
         return new static((int) $int);
