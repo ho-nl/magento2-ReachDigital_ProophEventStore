@@ -75,6 +75,32 @@ class RegisterUserTest extends TestCase
         $cr->route(RegisterUser::class)->to($this->objectManager->get(RegisterUserHandler::class));
         $cr->route(ChangeEmail::class)->to($this->objectManager->get(ChangeEmailHandler::class));
 
+        $connection = $this->objectManager->create(\Magento\Framework\App\ResourceConnection::class)->getConnection();
+
+        $tableName = 'event_stream_prooph_test_user';
+        if ($connection->isTableExists($tableName)) {
+            $connection->dropTable($tableName);
+        }
+
+        $sql = <<<EOT
+CREATE TABLE `$tableName` (
+  `no` bigint(20) NOT NULL AUTO_INCREMENT,
+  `event_id` char(36) COLLATE utf8_bin NOT NULL,
+  `event_name` varchar(100) COLLATE utf8_bin NOT NULL,
+  `payload` json NOT NULL,
+  `metadata` json NOT NULL,
+  `created_at` datetime(6) NOT NULL,
+  `aggregate_version` int(11) unsigned GENERATED ALWAYS AS (json_extract(`metadata`,'$._aggregate_version')) STORED NOT NULL,
+  `aggregate_id` char(36) COLLATE utf8_bin GENERATED ALWAYS AS (json_unquote(json_extract(`metadata`,'$._aggregate_id'))) STORED NOT NULL,
+  `aggregate_type` varchar(150) COLLATE utf8_bin GENERATED ALWAYS AS (json_unquote(json_extract(`metadata`,'$._aggregate_type'))) STORED NOT NULL,
+  PRIMARY KEY (`no`),
+  UNIQUE KEY `ix_event_id` (`event_id`),
+  UNIQUE KEY `ix_unique_event` (`aggregate_type`,`aggregate_id`,`aggregate_version`),
+  KEY `ix_query_aggregate` (`aggregate_type`,`aggregate_id`,`no`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+EOT;
+        $connection->query($sql);
+
         $userId = Uuid::uuid4();
         $es->commandBus()->dispatch(new RegisterUser([
             'id' => $userId->toString(),
