@@ -4,13 +4,13 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <!--<item name="prooph-projection-delete" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand</item>-->
-                <!--<item name="prooph-projection-names" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionNamesCommand</item>-->
-                <!--<item name="prooph-projection-reset" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionResetCommand</item>-->
-                <!--<item name="prooph-projection-run" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunCommand</item>-->
-                <!--<item name="prooph-projection-state" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStateCommand</item>-->
-                <!--<item name="prooph-projection-stop" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand</item>-->
-                <!--<item name="prooph-projection-stream-positions" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStreamPositionsCommand</item>-->
+                <item name="prooph-projection-delete" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand</item>
+                <item name="prooph-projection-names" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionNamesCommand</item>
+                <item name="prooph-projection-reset" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionResetCommand</item>
+                <item name="prooph-projection-run" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunCommand</item>
+                <item name="prooph-projection-state" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStateCommand</item>
+                <item name="prooph-projection-stop" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand</item>
+                <item name="prooph-projection-stream-positions" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStreamPositionsCommand</item>
             </argument>
         </arguments>
     </type>
@@ -42,6 +42,8 @@
     <preference for="Prooph\EventStore\Pdo\PersistenceStrategy" type="ReachDigital\ProophEventStore\PdoEventStore\PersistenceStrategy\MySqlSingleStreamStrategy"/>
     <preference for="Prooph\SnapshotStore\SnapshotStore" type="Prooph\SnapshotStore\Pdo\PdoSnapshotStore"/>
     <preference for="Prooph\EventSourcing\Aggregate\AggregateTranslator" type="Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator"/>
+
+    <preference for="PDO" type="ReachDigital\ProophEventStore\Infrastructure\Pdo"/>
 
     <type name="Prooph\EventStore\Pdo\MySqlEventStore">
         <arguments>
