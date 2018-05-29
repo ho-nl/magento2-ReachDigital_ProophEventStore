@@ -7,7 +7,7 @@ declare(strict_types=1);
 
 namespace ReachDigital\ProophEventStore\Infrastructure;
 
-
+//@todo move to Infrastructure\Bus namespace
 trait FormatEventMapTrait
 {
     /**

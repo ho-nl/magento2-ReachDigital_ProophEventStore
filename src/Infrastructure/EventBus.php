@@ -10,6 +10,7 @@ use Prooph\EventStore\ActionEventEmitterEventStoreFactory;
 use Prooph\EventStoreBusBridge\EventPublisher;
 use Prooph\EventStoreBusBridge\EventPublisherFactory;
 
+//@todo move to Infrastructure\Bus namespace
 class EventBus extends \Prooph\ServiceBus\EventBus
 {
     public function __construct(

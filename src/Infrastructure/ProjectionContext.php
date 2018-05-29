@@ -12,6 +12,7 @@ use Prooph\EventStore\Projection\ReadModelProjector;
 use ReachDigital\ProophEventStore\Api\ProjectionInterface;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserReadModel;
 
+//@todo move to Infrastructure\Projection namespace
 class ProjectionContext
 {
     /**

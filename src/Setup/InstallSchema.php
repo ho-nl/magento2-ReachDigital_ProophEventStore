@@ -53,6 +53,11 @@ class InstallSchema implements InstallSchemaInterface
   UNIQUE KEY `ix_aggregate_id` (`aggregate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;');
 
+        $plugins = $setup->getConnection()->fetchAssoc('SHOW PLUGINS');
+        if (!isset($plugins['mysqlx'])) {
+            $setup->run("INSTALL PLUGIN mysqlx SONAME 'mysqlx.so';");
+        }
+
         $setup->endSetup();
     }
 }

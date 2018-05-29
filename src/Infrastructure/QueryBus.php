@@ -10,6 +10,7 @@ namespace ReachDigital\ProophEventStore\Infrastructure;
 
 use Prooph\Common\Event\ActionEventEmitter;
 
+//@todo move to Infrastructure\Bus namespace
 class QueryBus extends \Prooph\ServiceBus\QueryBus
 {
     public function __construct(

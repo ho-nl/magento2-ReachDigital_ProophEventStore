@@ -11,6 +11,7 @@ namespace ReachDigital\ProophEventStore\Infrastructure;
 use Prooph\EventStore\EventStore;
 use Prooph\EventStore\StreamName;
 
+//@deprecated
 class StreamNameFactory
 {
     /**

@@ -8,6 +8,7 @@ namespace ReachDigital\ProophEventStore\Infrastructure;
 use Magento\Framework\App\ResourceConnection;
 use Zend_Db_Adapter_Abstract;
 
+//@todo move to Infrastructure\Database namespace
 class Pdo extends \PDO
 {
     public function __construct(

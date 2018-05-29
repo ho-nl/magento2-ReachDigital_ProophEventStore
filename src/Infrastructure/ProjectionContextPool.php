@@ -8,6 +8,7 @@ namespace ReachDigital\ProophEventStore\Infrastructure;
 use ReachDigital\ProophEventStore\Api\ProjectionInterface;
 use ReachDigital\ProophEventStore\Exception\ProjectionNotFoundException;
 
+//@todo move to Infrastructure\Projection namespace
 class ProjectionContextPool
 {
 

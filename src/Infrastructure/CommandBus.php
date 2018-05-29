@@ -11,6 +11,7 @@ namespace ReachDigital\ProophEventStore\Infrastructure;
 use Magento\Framework\Event\Manager;
 use Prooph\Common\Event\ActionEventEmitter;
 
+//@todo move to Infrastructure\Bus namespace
 class CommandBus extends \Prooph\ServiceBus\CommandBus
 {
     /** @var CommandRouter */
