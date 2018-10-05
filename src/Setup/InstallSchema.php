@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Setup;
 
 use Magento\Framework\Setup\InstallSchemaInterface;
@@ -52,11 +51,6 @@ class InstallSchema implements InstallSchemaInterface
   `aggregate_root` BLOB,
   UNIQUE KEY `ix_aggregate_id` (`aggregate_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;');
-
-        $plugins = $setup->getConnection()->fetchAssoc('SHOW PLUGINS');
-        if (!isset($plugins['mysqlx'])) {
-            $setup->run("INSTALL PLUGIN mysqlx SONAME 'mysqlx.so';");
-        }
 
         $setup->endSetup();
     }
