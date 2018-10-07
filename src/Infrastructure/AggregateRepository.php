@@ -11,7 +11,7 @@ use Prooph\EventStore\EventStore;
 use Prooph\EventStore\StreamName;
 use Prooph\SnapshotStore\SnapshotStore;
 
-abstract class AggregateRepository extends \Prooph\EventSourcing\Aggregate\AggregateRepository
+class AggregateRepository extends \Prooph\EventSourcing\Aggregate\AggregateRepository
 {
     public function __construct(
         EventStore $eventStore,
