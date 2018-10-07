@@ -14,6 +14,54 @@ https://github.com/ho-nl/magento2-ReachDigital_Subscription
 https://github.com/ho-nl/magento2-ReachDigital_ProophJira
 https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES
 
+## What is ES?
+https://www.youtube.com/watch?v=B6XUEoZlsWk
+http://getprooph.org/
+http://docs.getprooph.org/tutorial/
+https://github.com/prooph/proophessor-do
+
+## When to use ES?
+When you are creating new entities.
+When you want to have a high development velocity.
+
+## Building your own ES based module
+
+For a full example, take a look at [ReachDigital_TransferOrdersES](https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES),
+which implements all the patterns discussed here. [ReachDigital_Subscription](https://github.com/ho-nl/magento2-ReachDigital_Subscription)
+is actually in production so everything is more stable out, but doesn't follow all patterns described here and therefor
+is a bit messy.
+
+The Module we are going to build will be split up in multiple logical Magento Modules. We define the following sections:
+- Api
+- Command+Event Implementation
+- Query Implementation
+- Frontend UI
+- Backend UI
+
+### Api Module
+
+Must contain all:
+- Types
+- Commands
+- Events
+
+Generate your classes with [fpp](https://github.com/prolic/fpp) (there is a PHPStorm file watcher for fast development).
+
+Logical Magento Module: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/tree/master/TransferOrdersESApi
+Domain Model: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/master/TransferOrdersESApi/etc/domain.fpp
+Generated Code: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/tree/master/TransferOrdersESApi/Model
+
+Domain Model: https://github.com/ho-nl/magento2-ReachDigital_Subscription/blob/master/src/Model/Domain.fpp
+
+To create your own Domain model, understand this http://docs.getprooph.org/tutorial/why_event_sourcing.html
+
+TODO: Create, Read, Update, Delete are forbidden words, what are good Command/Event names?
+
+## Command+Event Implementation
+
+
+
+
 ## Usage
 
 To use the Prooph components in your application, use:
