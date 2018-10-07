@@ -1,6 +1,18 @@
 # Magento 2 Prooph EventStore
 
 Integration with Prooph software and Magento 2's DI.
+Reduce boilerplate in setting up your project.
+
+## Installation
+
+https://github.com/prolic/fpp/blob/master/docs/PhpStorm-Integration.md
+https://github.com/ho-nl/docs-internal/issues/22
+
+## Modules build with ES
+
+https://github.com/ho-nl/magento2-ReachDigital_Subscription
+https://github.com/ho-nl/magento2-ReachDigital_ProophJira
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES
 
 ## Usage
 
