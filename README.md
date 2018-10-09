@@ -21,8 +21,9 @@ http://docs.getprooph.org/tutorial/
 https://github.com/prooph/proophessor-do
 
 ## When to use ES?
-When you are creating new entities.
-When you want to have a high development velocity.
+- When you are creating new entities
+- When you are creating new Commands
+- When you want to have a high development velocity
 
 ## Building your own ES based module
 
@@ -40,10 +41,7 @@ The Module we are going to build will be split up in multiple logical Magento Mo
 
 ### Api Module
 
-Must contain all:
-- Types
-- Commands
-- Events
+#### Field Types, Commands and events with FPP
 
 Generate your classes with [fpp](https://github.com/prolic/fpp) (there is a PHPStorm file watcher for fast development).
 
@@ -55,12 +53,62 @@ Domain Model: https://github.com/ho-nl/magento2-ReachDigital_Subscription/blob/m
 
 To create your own Domain model, understand this http://docs.getprooph.org/tutorial/why_event_sourcing.html
 
-TODO: Create, Read, Update, Delete are forbidden words, what are good Command/Event names?
+#### Your Model (AggregateRoot)
 
-## Command+Event Implementation
+Create your Domain Model (AggregateRoot). Because this model actually contains business logic, this class can't be
+auto generated. This is a bit of chore, but writing all your commands, events, fields down in the class validates your
+domain model.
 
+This class is a leaky abstraction: This class actually defines the business logic required and belongs in the domain
+model, but it extends AggregateRoot which is an implementation specific thing.. Therefor it is a bit of odd class here.
 
+Examples:
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/master/TransferOrdersESApi/Model/Transfer/Transfer.php
+https://github.com/ho-nl/magento2-ReachDigital_Subscription/blob/master/src/Model/Subscription/Subscription.php
+https://github.com/ho-nl/magento2-ReachDigital_Subscription/blob/master/src/Model/ProductPlan/ProductPlan.php
 
+#### GetTransferInterface + SaveTransferInterface
+
+Since we dont want any save/load logic in this module, we're defining the interfaces here.
+
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/ab296875bce658196775b911edb9892e492a6012/TransferOrdersESApi/Model/Transfer/GetTransferInterface.php
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/ab296875bce658196775b911edb9892e492a6012/TransferOrdersESApi/Model/Transfer/SaveTransferInterface.php
+
+## Event Store setup (chore)
+
+We're now implementing the Command side of CQRS (Command Query Responsibility Seggegation). This means we need to
+implement the GetTransferInterface, SaveTransferInterface.
+
+Create a second module (composer.json PSR4, registration.php, module.xml) and enable the module via php bin/magento
+module enable, make sure it works.
+
+Create a event store table by creating a SchemaPatch:
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/ab296875bce658196775b911edb9892e492a6012/TransferOrdersES/Setup/Patch/Schema/CreateEventStore.php
+
+To access the information of the event store, use the [AggregateRepository](http://docs.getprooph.org/event-sourcing/repositories.html#4-2-6) to fetch the information.
+
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/ab296875bce658196775b911edb9892e492a6012/TransferOrdersES/Model/Transfer/GetTransfer.php
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/ab296875bce658196775b911edb9892e492a6012/TransferOrdersES/Model/Transfer/SaveTransfer.php
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/ab296875bce658196775b911edb9892e492a6012/TransferOrdersES/etc/di.xml
+
+## Command Handlers
+
+Now onto the meat of the application, making everything work. First we create handlers (with tests for the application).
+
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/tree/7512a2ad62f297cdb31f96e84161dab884867e29/TransferOrdersES/Model/Transfer/Handler
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/7512a2ad62f297cdb31f96e84161dab884867e29/TransferOrdersES/etc/di.xml#L10-L27
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/tree/7512a2ad62f297cdb31f96e84161dab884867e29/TransferOrdersES/Test/Integration/Model/Handler
+
+In the examples I first focus on the internals of the application, and don't bother with stuff that interacts with the
+rest of Magento. This way I can focus on this part of the application, which keeps everything simple.
+
+### Interaction with the rest of the system
+A feature usually doesn't exist in a vacuum, so we need to integrate it with the rest of Magento.
+
+## Admin UI
+
+- Controllers
+- UI
 
 ## Usage
 
