@@ -17,7 +17,7 @@ class AggregateRepository extends \Prooph\EventSourcing\Aggregate\AggregateRepos
         EventStore $eventStore,
         AggregateTranslator $aggregateTranslator,
         SnapshotStore $snapshotStore = null,
-        string $streamName,
+        StreamName $streamName,
         string $aggregateRoot,
         bool $oneStreamPerAggregate = false,
         bool $disableIdentityMap = false,
@@ -28,7 +28,7 @@ class AggregateRepository extends \Prooph\EventSourcing\Aggregate\AggregateRepos
             AggregateType::fromAggregateRootClass($aggregateRoot),
             $aggregateTranslator,
             $snapshotStore,
-            new StreamName($streamName),
+            $streamName,
             $oneStreamPerAggregate,
             $disableIdentityMap,
             $metadata
