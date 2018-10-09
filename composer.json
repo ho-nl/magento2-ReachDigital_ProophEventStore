@@ -17,7 +17,7 @@
     "license": "BSD-2-Clause",
     "autoload": {
         "files": [
-            "registration.php"
+            "src/registration.php"
         ],
         "psr-4": {
             "ReachDigital\\ProophEventStore\\": "src/"
