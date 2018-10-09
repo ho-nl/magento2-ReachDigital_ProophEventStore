@@ -1,14 +1,14 @@
 <?php
+/**
+ * Copyright © Reach Digital (https://www.reachdigital.io/)
+ * See LICENSE.txt for license details.
+ */
 declare(strict_types=1);
 
+namespace ReachDigital\ProophEventStore\Infrastructure\Projection;
 
-namespace ReachDigital\ProophEventStore\Infrastructure;
-
-
-use ReachDigital\ProophEventStore\Api\ProjectionInterface;
 use ReachDigital\ProophEventStore\Exception\ProjectionNotFoundException;
 
-//@todo move to Infrastructure\Projection namespace
 class ProjectionContextPool
 {
 

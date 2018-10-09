@@ -1,11 +1,13 @@
 <?php
+/**
+ * Copyright © Reach Digital (https://www.reachdigital.io/)
+ * See LICENSE.txt for license details.
+ */
 declare(strict_types=1);
 
 
-namespace ReachDigital\ProophEventStore\Infrastructure;
+namespace ReachDigital\ProophEventStore\Infrastructure\ServiceBus;
 
-
-//@todo move to Infrastructure\Bus namespace
 class EventRouter extends \Prooph\ServiceBus\Plugin\Router\EventRouter
 {
 //    use FormatEventMapTrait;

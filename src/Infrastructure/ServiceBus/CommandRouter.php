@@ -5,7 +5,7 @@
  */
 
 declare(strict_types=1);
-namespace ReachDigital\ProophEventStore\Infrastructure;
+namespace ReachDigital\ProophEventStore\Infrastructure\ServiceBus;
 
 
 //@todo move to Infrastructure\Bus namespace

@@ -9,22 +9,20 @@ use Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator;
 use Prooph\EventStore\EventStore;
 use Prooph\EventStore\StreamName;
 use Prooph\SnapshotStore\SnapshotStore;
-use ReachDigital\ProophEventStore\Infrastructure\StreamNameFactory;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\User;
 
 class UserRepository extends AggregateRepository
 {
     public function __construct(
         EventStore $eventStore,
-        SnapshotStore $snapshotStore,
-        StreamNameFactory $streamNameFactory
+        SnapshotStore $snapshotStore
     ) {
         parent::__construct(
             $eventStore,
             AggregateType::fromAggregateRootClass(User::class),
             new AggregateTranslator(),
             $snapshotStore,
-            $streamNameFactory->create('prooph_test_user')
+            new StreamName('event_stream_prooph_test_user')
         );
     }
 

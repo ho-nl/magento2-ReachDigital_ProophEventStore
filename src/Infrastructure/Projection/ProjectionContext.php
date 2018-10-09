@@ -1,18 +1,19 @@
 <?php
+/**
+ * Copyright © Reach Digital (https://www.reachdigital.io/)
+ * See LICENSE.txt for license details.
+ */
 declare(strict_types=1);
 
 
-namespace ReachDigital\ProophEventStore\Infrastructure;
-
+namespace ReachDigital\ProophEventStore\Infrastructure\Projection;
 
 use Prooph\EventStore\Projection\ProjectionManager;
 use Prooph\EventStore\Projection\Projector;
 use Prooph\EventStore\Projection\ReadModel;
 use Prooph\EventStore\Projection\ReadModelProjector;
 use ReachDigital\ProophEventStore\Api\ProjectionInterface;
-use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserReadModel;
 
-//@todo move to Infrastructure\Projection namespace
 class ProjectionContext
 {
     /**

@@ -7,7 +7,7 @@ namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure
 
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
-use ReachDigital\ProophEventStore\Infrastructure\Pdo;
+use ReachDigital\ProophEventStore\Infrastructure\Pdo\Connection;
 
 class PdoTest extends TestCase
 {
@@ -21,8 +21,8 @@ class PdoTest extends TestCase
 
     public function test_pdo_instance_should_work()
     {
-        /** @var Pdo $pdo */
-        $pdo = $this->objectManager->get(Pdo::class);
+        /** @var Connection $pdo */
+        $pdo = $this->objectManager->get(Connection::class);
         $this->assertInstanceOf(\PDO::class, $pdo);
         $this->assertEquals('1', $pdo->query('SELECT 1')->execute());
     }

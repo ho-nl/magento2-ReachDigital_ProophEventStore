@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace ReachDigital\ProophEventStore\Console\Command;
 
-use Prooph\EventStore\Pdo\Projection\MySqlProjectionManager;
-use ReachDigital\ProophEventStore\Infrastructure\ProjectionContext;
-use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
+use ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionContext;
+use ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionContextPool;
+use ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionManagerProxy;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Input\InputArgument;
@@ -28,19 +28,19 @@ class ProjectionNamesCommand extends Command
      */
     private $projectionContextPool;
     /**
-     * @var MySqlProjectionManager
+     * @var ProjectionManagerProxy
      */
-    private $mySqlProjectionManager;
+    private $projectionManager;
 
 
     public function __construct(
         ProjectionContextPool $projectionContextPool,
-        MySqlProjectionManager $mySqlProjectionManager,
+        ProjectionManagerProxy $mySqlProjectionManager,
         $name = null
     ) {
         parent::__construct($name);
         $this->projectionContextPool = $projectionContextPool;
-        $this->mySqlProjectionManager = $mySqlProjectionManager;
+        $this->projectionManager     = $mySqlProjectionManager;
     }
 
 

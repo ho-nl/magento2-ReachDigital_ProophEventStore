@@ -6,7 +6,7 @@ namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection;
 
 
 use Prooph\EventStore\Projection\AbstractReadModel;
-use ReachDigital\ProophEventStore\Infrastructure\Pdo;
+use ReachDigital\ProophEventStore\Infrastructure\Pdo\Connection;
 
 class UserReadModel extends AbstractReadModel
 {
@@ -14,7 +14,7 @@ class UserReadModel extends AbstractReadModel
     
     private $connection;
 
-    public function __construct(Pdo $connection)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }

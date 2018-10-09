@@ -1,16 +1,17 @@
 <?php
+/**
+ * Copyright © Reach Digital (https://www.reachdigital.io/)
+ * See LICENSE.txt for license details.
+ */
 declare(strict_types=1);
 
-
-namespace ReachDigital\ProophEventStore\Infrastructure;
-
+namespace ReachDigital\ProophEventStore\Infrastructure\ServiceBus;
 
 use Prooph\Common\Event\ActionEventEmitter;
 use Prooph\EventStore\ActionEventEmitterEventStoreFactory;
 use Prooph\EventStoreBusBridge\EventPublisher;
 use Prooph\EventStoreBusBridge\EventPublisherFactory;
 
-//@todo move to Infrastructure\Bus namespace
 class EventBus extends \Prooph\ServiceBus\EventBus
 {
     public function __construct(
