@@ -6,6 +6,7 @@
 namespace ReachDigital\ProophEventStore\Infrastructure\EventStore;
 
 use Prooph\EventStore\Pdo\PersistenceStrategy;
+use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbType;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbTypeResolver;
 
 class PersistenceStrategyFactory
@@ -18,7 +19,7 @@ class PersistenceStrategyFactory
         MysqlSingleStreamStrategyProxyFactory $mysqlSingleStreamStrategyProxFactory,
         MariaDbSingleStreamStrategyProxyFactory $mariaDbSingleStreamStrategyProxyFactory
     ) {
-        if ($dbTypeResolver->get() === DbTypeResolver::DB_TYPE_MARIADB) {
+        if ($dbTypeResolver->get() === DbType::mySql()) {
             $this->instance = $mysqlSingleStreamStrategyProxFactory->create();
         } else {
             $this->instance = $mariaDbSingleStreamStrategyProxyFactory->create();

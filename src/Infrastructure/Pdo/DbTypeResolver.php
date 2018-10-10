@@ -10,13 +10,10 @@ namespace ReachDigital\ProophEventStore\Infrastructure\Pdo;
 
 class DbTypeResolver
 {
-    public const DB_TYPE_MYSQL = 'mysql';
-    public const DB_TYPE_MARIADB = 'mariadb';
-
     /** @var Connection  */
     private $connection;
 
-    /** @var string */
+    /** @var DbType */
     private $dbType;
 
     public function __construct(Connection $connection)
@@ -24,13 +21,22 @@ class DbTypeResolver
         $this->connection = $connection;
     }
 
-    public function get() : string
+    public function get(): DbType
+    {
+        if ($this->dbType === null) {
+            $this->dbType = $this->resolveDbType();
+        }
+
+        return $this->dbType;
+    }
+
+    private function resolveDbType(): DbType
     {
         $info = $this->connection->query("SHOW VARIABLES like '%version%'")->fetchAll(\PDO::FETCH_KEY_PAIR);
         if (version_compare($info['version'], '10.2.11', '>=')) {
-            $this->dbType = self::DB_TYPE_MARIADB;
+            return DbType::mariaDb();
         } elseif (version_compare($info['version'], '5.7.9', '>=') && version_compare($info['version'], '10', '<')) {
-            $this->dbType = self::DB_TYPE_MYSQL;
+            return DbType::mySql();
         } else {
             throw new \RuntimeException(sprintf(
                 'Database version not supported, see https://github.com/prooph/pdo-event-store#requirements: %s %s',
@@ -38,7 +44,5 @@ class DbTypeResolver
                 $info['version_comment']
             ));
         }
-
-        return self::DB_TYPE_MYSQL;
     }
 }
