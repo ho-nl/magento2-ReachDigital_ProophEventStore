@@ -35,14 +35,16 @@ class DbTypeResolver
         $info = $this->connection->query("SHOW VARIABLES like '%version%'")->fetchAll(\PDO::FETCH_KEY_PAIR);
         if (version_compare($info['version'], '10.2.11', '>=')) {
             return DbType::mariaDb();
-        } elseif (version_compare($info['version'], '5.7.9', '>=') && version_compare($info['version'], '10', '<')) {
-            return DbType::mySql();
-        } else {
-            throw new \RuntimeException(sprintf(
-                'Database version not supported, see https://github.com/prooph/pdo-event-store#requirements: %s %s',
-                $info['version'],
-                $info['version_comment']
-            ));
         }
+
+        if (version_compare($info['version'], '5.7.9', '>=') && version_compare($info['version'], '10', '<')) {
+            return DbType::mySql();
+        }
+
+        throw new \RuntimeException(sprintf(
+            'Database version not supported, see https://github.com/prooph/pdo-event-store#requirements: %s %s',
+            $info['version'],
+            $info['version_comment']
+        ));
     }
 }
