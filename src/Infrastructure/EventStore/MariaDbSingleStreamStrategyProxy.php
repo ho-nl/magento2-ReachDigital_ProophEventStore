@@ -15,7 +15,6 @@ use Prooph\EventStore\Pdo\HasQueryHint;
 use Prooph\EventStore\Pdo\MariaDBIndexedPersistenceStrategy;
 use Prooph\EventStore\Pdo\PersistenceStrategy;
 use Prooph\EventStore\StreamName;
-use Prooph\EventStore\Util\Assertion;
 
 /**
  * Class MySqlSingleStreamStrategy

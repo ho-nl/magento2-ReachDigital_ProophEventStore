@@ -126,43 +126,54 @@ $this->proophEventStoreContext->queryBus()->dispatch($query)->then(function($res
 ### Adding commands
 
 ```xml
-<type name="ReachDigital\ProophEventStore\Infrastructure\CommandRouter">
-  <arguments>
-    <argument name="messageMap" xsi:type="array">
-      <item name="ReachDigital\MyModule\Model\ProductPlan\Command\MyCommand"
-                 xsi:type="object">ReachDigital\MyModule\Model\ProductPlan\Handler\MyCommandHandler</item>
-    </argument>
-  </arguments>
-</type>
-
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="ReachDigital\ProophEventStore\Infrastructure\CommandRouter">
+      <arguments>
+        <argument name="messageMap" xsi:type="array">
+          <item name="ReachDigital\MyModule\Model\ProductPlan\Command\MyCommand"
+                     xsi:type="object">ReachDigital\MyModule\Model\ProductPlan\Handler\MyCommandHandler</item>
+        </argument>
+      </arguments>
+    </type>
+</config>
 ```
 
 ### Adding queries
 
 ```xml
-<type name="ReachDigital\ProophEventStore\Infrastructure\QueryRouter">
-    <arguments>
-        <argument name="messageMap" xsi:type="array">
-            <item name="ReachDigital\Subscription\Model\Subscription\Query\GetOrderSchedule"
-                  xsi:type="object">ReachDigital\Subscription\Model\Subscription\Handler\GetOrderScheduleHandler</item>
-            <item name="ReachDigital\Subscription\Model\Subscription\Query\GetOrderHistory"
-                  xsi:type="object">ReachDigital\Subscription\Model\Subscription\Handler\GetOrderHistoryHandler</item>
-        </argument>
-    </arguments>
-</type>
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="ReachDigital\ProophEventStore\Infrastructure\QueryRouter">
+        <arguments>
+            <argument name="messageMap" xsi:type="array">
+                <item name="ReachDigital\Subscription\Model\Subscription\Query\GetOrderSchedule"
+                      xsi:type="object">ReachDigital\Subscription\Model\Subscription\Handler\GetOrderScheduleHandler</item>
+                <item name="ReachDigital\Subscription\Model\Subscription\Query\GetOrderHistory"
+                      xsi:type="object">ReachDigital\Subscription\Model\Subscription\Handler\GetOrderHistoryHandler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
 ```
 
 ### Adding AggregateRoot Collections
 
 
 ```xml
-<preference for="ReachDigital\Subscription\Model\Subscription\SubscriptionCollection"
-            type="ReachDigital\Subscription\Infrastructure\Repository\EventStoreSubscriptionCollection"/>
-<type name="ReachDigital\Subscription\Infrastructure\Repository\EventStoreSubscriptionCollection">
-    <arguments>
-        <argument name="aggregateRoot" xsi:type="string">ReachDigital\Subscription\Model\Subscription\Subscription</argument>
-        <argument name="streamName" xsi:type="string">subscription</argument>
-    </arguments>
-</type>
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="ReachDigital\Subscription\Model\Subscription\SubscriptionCollection"
+                type="ReachDigital\Subscription\Infrastructure\Repository\EventStoreSubscriptionCollection"/>
+    <type name="ReachDigital\Subscription\Infrastructure\Repository\EventStoreSubscriptionCollection">
+        <arguments>
+            <argument name="aggregateRoot" xsi:type="string">ReachDigital\Subscription\Model\Subscription\Subscription</argument>
+            <argument name="streamName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+</config>
 ```
     

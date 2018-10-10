@@ -32,7 +32,7 @@ class DbTypeResolver
 
     private function resolveDbType(): DbType
     {
-        $info = $this->connection->query("SHOW VARIABLES like '%version%'")->fetchAll(\PDO::FETCH_KEY_PAIR);
+        $info = $this->connection->query("SHOW VARIABLES like 'version%'")->fetchAll(\PDO::FETCH_KEY_PAIR);
         if (version_compare($info['version'], '10.2.11', '>=')) {
             return DbType::mariaDb();
         }

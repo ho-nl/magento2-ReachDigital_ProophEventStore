@@ -11,6 +11,8 @@ use Prooph\EventStore\Pdo\MariaDbEventStoreFactory;
 use Prooph\EventStore\Pdo\MySqlEventStoreFactory;
 use Prooph\EventStore\Stream;
 use Prooph\EventStore\StreamName;
+use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbType;
+use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbTypeResolver;
 
 class EventStoreProxy implements \Prooph\EventStore\EventStore
 {
@@ -19,9 +21,14 @@ class EventStoreProxy implements \Prooph\EventStore\EventStore
 
     public function __construct(
         MysqlEventStoreFactory $mySqlEventStoreFactory,
-        MariaDbEventStoreFactory $mariaDbEventStoreFactory
+        MariaDbEventStoreFactory $mariaDbEventStoreFactory,
+        DbTypeResolver $dbTypeResolver
     ) {
-        $this->eventStore = $mySqlEventStoreFactory->create();
+        if ($dbTypeResolver->get()->equals(DbType::mySql())) {
+            $this->eventStore = $mySqlEventStoreFactory->create();
+        } else {
+            $this->eventStore = $mariaDbEventStoreFactory->create();
+        }
     }
 
     public function updateStreamMetadata(StreamName $streamName, array $newMetadata): void

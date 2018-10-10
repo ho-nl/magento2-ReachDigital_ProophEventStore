@@ -5,10 +5,10 @@
  */
 
 declare(strict_types=1);
+
 namespace ReachDigital\ProophEventStore\Infrastructure\ServiceBus;
 
-
-//@todo move to Infrastructure\Bus namespace
+/** @noinspection LongInheritanceChainInspection */
 class CommandRouter extends \Prooph\ServiceBus\Plugin\Router\CommandRouter
 {
     use FormatEventMapTrait;

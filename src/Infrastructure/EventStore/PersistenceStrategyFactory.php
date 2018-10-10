@@ -19,7 +19,7 @@ class PersistenceStrategyFactory
         MysqlSingleStreamStrategyProxyFactory $mysqlSingleStreamStrategyProxFactory,
         MariaDbSingleStreamStrategyProxyFactory $mariaDbSingleStreamStrategyProxyFactory
     ) {
-        if ($dbTypeResolver->get() === DbType::mySql()) {
+        if ($dbTypeResolver->get()->equals(DbType::mySql())) {
             $this->instance = $mysqlSingleStreamStrategyProxFactory->create();
         } else {
             $this->instance = $mariaDbSingleStreamStrategyProxyFactory->create();

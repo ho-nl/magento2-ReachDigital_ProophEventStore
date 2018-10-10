@@ -3,10 +3,12 @@
  * Copyright © Reach Digital (https://www.reachdigital.io/)
  * See LICENSE.txt for license details.
  */
+
 declare(strict_types=1);
 
 namespace ReachDigital\ProophEventStore\Infrastructure\ServiceBus;
 
+/** @noinspection LongInheritanceChainInspection */
 class QueryRouter extends \Prooph\ServiceBus\Plugin\Router\QueryRouter
 {
     use FormatEventMapTrait;

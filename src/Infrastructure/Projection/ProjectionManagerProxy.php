@@ -3,6 +3,9 @@
  * Copyright © Reach Digital (https://www.reachdigital.io/)
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
+
 namespace ReachDigital\ProophEventStore\Infrastructure\Projection;
 
 use Prooph\EventStore\Exception\ProjectionNotFound;
@@ -14,6 +17,8 @@ use Prooph\EventStore\Projection\Projector;
 use Prooph\EventStore\Projection\Query;
 use Prooph\EventStore\Projection\ReadModel;
 use Prooph\EventStore\Projection\ReadModelProjector;
+use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbType;
+use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbTypeResolver;
 
 class ProjectionManagerProxy implements ProjectionManager
 {
@@ -23,9 +28,14 @@ class ProjectionManagerProxy implements ProjectionManager
 
     public function __construct(
         MySqlProjectionManagerFactory $mySqlProjectionManagerFactory,
-        MariaDbProjectionManagerFactory $mariaDbProjectionManagerFactory
+        MariaDbProjectionManagerFactory $mariaDbProjectionManagerFactory,
+        DbTypeResolver $dbTypeResolver
     ) {
-        $this->projectionManager = $mySqlProjectionManagerFactory->create();
+        if ($dbTypeResolver->get()->equals(DbType::mySql())) {
+            $this->projectionManager = $mySqlProjectionManagerFactory->create();
+        } else {
+            $this->projectionManager = $mariaDbProjectionManagerFactory->create();
+        }
     }
 
     public function createQuery(): Query

@@ -41,7 +41,7 @@ class RegisterUserTest extends TestCase
         $commandBus = $es->commandBus();
         $this->assertInstanceOf(CommandBus::class, $commandBus);
 
-        $commandBusEventsRefl = (new \ReflectionProperty($commandBus, 'events'));
+        $commandBusEventsRefl = new \ReflectionProperty($commandBus, 'events');
         $commandBusEventsRefl->setAccessible(true);
         $commandBusEvents = $commandBusEventsRefl->getValue($commandBus);
 
@@ -50,7 +50,7 @@ class RegisterUserTest extends TestCase
         $this->assertInstanceOf(EventBus::class, $eventBus);
 
 
-        $eventBusEventsRefl = (new \ReflectionProperty($eventBus, 'events'));
+        $eventBusEventsRefl = new \ReflectionProperty($eventBus, 'events');
         $eventBusEventsRefl->setAccessible(true);
         $eventBusEvents = $eventBusEventsRefl->getValue($eventBus);
 

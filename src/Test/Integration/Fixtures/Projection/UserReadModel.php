@@ -31,7 +31,7 @@ CREATE TABLE `$tableName` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 EOT;
-        $this->connection->query($sql);
+        $this->connection->exec($sql);
     }
     public function isInitialized(): bool
     {
@@ -39,10 +39,7 @@ EOT;
         $sql = "SHOW TABLES LIKE '$tableName';";
         $statement = $this->connection->query($sql);
         $result = $statement->fetch();
-        if (false === $result) {
-            return false;
-        }
-        return true;
+        return !(false === $result);
     }
     public function reset(): void
     {
