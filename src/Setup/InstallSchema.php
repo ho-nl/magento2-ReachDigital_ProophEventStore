@@ -35,10 +35,10 @@ class InstallSchema implements InstallSchemaInterface
     {
         $setup->startSetup();
 
-        $packageDir = ComposerLocator::getPath('prooph/pdo-event-store');
+        $packageDir = \ComposerLocator::getPath('prooph/pdo-event-store');
         $sqlFiles = Glob::glob("{$packageDir}/scripts/{$this->dbTypeResolver->get()->toString()}/*.sql");
 
-        $packageDir = ComposerLocator::getPath('prooph/pdo-snapshot-store');
+        $packageDir = \ComposerLocator::getPath('prooph/pdo-snapshot-store');
         $sqlFiles[] = "{$packageDir}/scripts/mysql_snapshot_table.sql";
 
         foreach ($sqlFiles as $sqlFile) {
