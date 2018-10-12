@@ -27,6 +27,8 @@ class Uninstall implements UninstallInterface
     {
         $setup->startSetup();
 
+        //Delete sequence tales.
+
         if ($setup->getConnection()->isTableExists('event_streams')) {
             $setup->getConnection()->dropTable('event_streams');
         }

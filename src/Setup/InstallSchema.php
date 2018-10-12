@@ -7,6 +7,7 @@ use Magento\Framework\Filesystem\Glob;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
+use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbType;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbTypeResolver;
 
 class InstallSchema implements InstallSchemaInterface
@@ -36,7 +37,9 @@ class InstallSchema implements InstallSchemaInterface
         $setup->startSetup();
 
         $packageDir = \ComposerLocator::getPath('prooph/pdo-event-store');
-        $sqlFiles = Glob::glob("{$packageDir}/scripts/{$this->dbTypeResolver->get()->toString()}/*.sql");
+        $sqlFiles   = $this->dbTypeResolver->get()->equals(DbType::mySql())
+            ? Glob::glob("{$packageDir}/scripts/mysql/*.sql")
+            : Glob::glob("{$packageDir}/scripts/mariadb/*.sql");
 
         $packageDir = \ComposerLocator::getPath('prooph/pdo-snapshot-store');
         $sqlFiles[] = "{$packageDir}/scripts/mysql_snapshot_table.sql";
