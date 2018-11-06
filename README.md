@@ -176,4 +176,22 @@ $this->proophEventStoreContext->queryBus()->dispatch($query)->then(function($res
     </type>
 </config>
 ```
-    
+  
+## Setting up crons
+
+```
+* * * * * flock ~/.transferOrderGridLock php bin/magento event-store:projection:run transferOrderGrid
+* * * * * flock ~/.someOtherProjection php bin/magento event-store:projection:run someOtherProjection
+```
+
+Then after deployment do:
+```
+php bin/magento event-store:projection:reset transferOrderGrid
+php bin/magento event-store:projection:reset someOtherProjection
+```
+
+This will automatically completely regenerate the projection. This might not be completely ideal as this is a full
+reindex, but since we dont know if the projection class or db schema has changed we can't know for sure if it is 
+required.
+
+Also this requires modifying the cron when a projection changes, so this requires some additional todo's
