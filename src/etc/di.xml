@@ -5,13 +5,11 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="prooph-projection-delete" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand</item>
-                <item name="prooph-projection-names" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionNamesCommand</item>
-                <item name="prooph-projection-reset" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionResetCommand</item>
-                <item name="prooph-projection-run" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunCommand</item>
-                <item name="prooph-projection-state" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStateCommand</item>
-                <item name="prooph-projection-stop" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand</item>
-                <item name="prooph-projection-stream-positions" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStreamPositionsCommand</item>
+                <item name="prooph-projection-delete" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand\Proxy</item>
+                <item name="prooph-projection-reset" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionResetCommand\Proxy</item>
+                <item name="prooph-projection-run" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunCommand\Proxy</item>
+                <item name="prooph-projection-stop" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand\Proxy</item>
+                <item name="prooph-projection-status" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStatusCommand\Proxy</item>
             </argument>
         </arguments>
     </type>
@@ -69,6 +67,10 @@
             <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo\Connection</argument>
         </arguments>
     </type>
+
+
+    <!-- Configuring the ProjectionManager -->
+    <preference for="Prooph\EventStore\Projection\ProjectionManager" type="ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionManagerProxy"/>
 
     <type name="Prooph\EventStore\Pdo\Projection\MySqlProjectionManager">
         <arguments>
