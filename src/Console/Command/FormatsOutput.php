@@ -14,6 +14,6 @@ trait FormatsOutput
         $outputFormatter = $output->getFormatter();
         $outputFormatter->setStyle('header', new OutputFormatterStyle('green', null));
         $outputFormatter->setStyle('highlight', new OutputFormatterStyle('green', null, ['bold']));
-        $outputFormatter->setStyle('action', new OutputFormatterStyle('blue', null));
+        $outputFormatter->setStyle('action', new OutputFormatterStyle('default', null));
     }
 }
