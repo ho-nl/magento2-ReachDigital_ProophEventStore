@@ -3,14 +3,18 @@
  * Copyright © Reach Digital (https://www.reachdigital.io/)
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
 namespace ReachDigital\ProophEventStore\Infrastructure\EventStore;
 
 use Iterator;
 use Prooph\EventStore\Metadata\MetadataMatcher;
 use Prooph\EventStore\Pdo\MariaDbEventStoreFactory;
 use Prooph\EventStore\Pdo\MySqlEventStoreFactory;
+use Prooph\EventStore\Plugin\UpcastingPlugin;
 use Prooph\EventStore\Stream;
 use Prooph\EventStore\StreamName;
+use Prooph\EventStore\Upcasting\UpcasterChain;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbType;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbTypeResolver;
 
@@ -29,6 +33,13 @@ class EventStoreProxy implements \Prooph\EventStore\EventStore
         } else {
             $this->eventStore = $mariaDbEventStoreFactory->create();
         }
+
+//        (new UpcastingPlugin($upcasterChain))->attachToEventStore($this->eventStore);
+    }
+
+    public function eventStorePlugin(\Prooph\EventStore\EventStore $eventStore): void
+    {
+        //Add upcasting plugin http://docs.getprooph.org/event-store/upcasting.html
     }
 
     public function updateStreamMetadata(StreamName $streamName, array $newMetadata): void

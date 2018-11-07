@@ -8,6 +8,7 @@
                 <item name="prooph-projection-delete" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand\Proxy</item>
                 <item name="prooph-projection-reset" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionResetCommand\Proxy</item>
                 <item name="prooph-projection-run" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunCommand\Proxy</item>
+                <item name="prooph-projection-run-all" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunAllCommand\Proxy</item>
                 <item name="prooph-projection-stop" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand\Proxy</item>
                 <item name="prooph-projection-status" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStatusCommand\Proxy</item>
             </argument>
@@ -45,6 +46,15 @@
 
     <!-- EventStore Configuration -->
     <preference for="Prooph\EventStore\EventStore" type="ReachDigital\ProophEventStore\Infrastructure\EventStore\EventStoreProxy"/>
+
+    <!--<type name="Prooph\EventStore\Upcasting\UpcasterChain">-->
+        <!--<arguments>-->
+            <!--<argument name="upcasters" xsi:type="array">-->
+                <!--&lt;!&ndash; To implement your own upcaster see http://docs.getprooph.org/event-store/upcasting.html &ndash;&gt;-->
+                <!--&lt;!&ndash;<item name="my-event-upcast" xsi:type="object">Prooph\EventStore\Upcasting\Upcaster</item>&ndash;&gt;-->
+            <!--</argument>-->
+        <!--</arguments>-->
+    <!--</type>-->
 
     <type name="Prooph\EventStore\Pdo\MySqlEventStore">
         <arguments>
