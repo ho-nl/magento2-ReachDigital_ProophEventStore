@@ -34,10 +34,19 @@ class ProjectionRunCommand extends AbstractProjectionCommand
 
         $projector = $this->projectionContext->projector([Projector::OPTION_PCNTL_DISPATCH => true]);
         $projection = $this->projectionContext->projection()->project($projector);
-        pcntl_signal(SIGQUIT, function () {
-            $this->projectionContext->projector()->stop();
-        });
+
+        pcntl_signal(SIGINT, $this->stop());
+        pcntl_signal(SIGQUIT, $this->stop());
+        pcntl_signal(SIGHUP, $this->stop());
+
         $projection->run($keepRunning);
         $output->writeln(sprintf('<action>Projection <highlight>%s</highlight> completed.</action>', $this->projectionName));
+    }
+
+    private function stop(): callable
+    {
+        return function() {
+            $this->projectionContext->projector()->stop();
+        };
     }
 }
