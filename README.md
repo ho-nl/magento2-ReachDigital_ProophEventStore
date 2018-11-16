@@ -110,6 +110,29 @@ A feature usually doesn't exist in a vacuum, so we need to integrate it with the
 - Controllers
 - UI
 
+
+## Create a Admin Grid event store Projection
+
+We're creating a [projection](http://docs.getprooph.org/event-store/projections.html) which is like a Magento index,
+but easier to create and more flexible and stable. After that we're going to render the data in an admin grid.
+
+### Creating a projection
+
+To register a new projection 
+
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/etc/di.xml
+
+- Add a menu: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/etc/adminhtml/menu.xml
+- Add a route: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/etc/adminhtml/routes.xml
+- Add a controller: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/Controller/Adminhtml/Index/Index.php
+- Add a layout file: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/view/adminhtml/layout/transfer_order_index_index.xml
+- Add a di file: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/etc/di.xml
+- Add a ui_component file: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/view/adminhtml/ui_component/transfer_order_listing.xml
+
+
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/tree/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI
+
+
 ## Usage
 
 To use the Prooph components in your application, use:
@@ -176,7 +199,25 @@ $this->proophEventStoreContext->queryBus()->dispatch($query)->then(function($res
     </type>
 </config>
 ```
-  
+
+## Setting up crons
+    
+
+locked_until value renderen in status command.
+
+
+//Stop & halt
+
+//Wait until stopped
+
+//Do upgrade dingen
+
+//Reset Projection
+
+//Run
+
+//If crashed, rerun
+
 ## Setting up crons
 
 ```
