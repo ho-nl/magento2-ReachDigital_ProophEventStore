@@ -12,9 +12,9 @@ use Magento\Framework\App\ResourceConnection;
 
 class SimpleReadModel implements \Prooph\EventStore\Projection\ReadModel
 {
-    public const INSERT = 'insertRow';
-    public const UPDATE = 'updateRow';
-    public const DELETE = 'deleteRow';
+    public const INSERT = 'insert';
+    public const UPDATE = 'update';
+    public const DELETE = 'delete';
 
     private $operations = [self::INSERT, self::UPDATE, self::DELETE];
 
@@ -84,12 +84,12 @@ class SimpleReadModel implements \Prooph\EventStore\Projection\ReadModel
         $this->stack = [];
     }
 
-    protected function insert(...$data): void
+    protected function insert(array $data): void
     {
         $this->resourceConnection->getConnection()->insert((string) $this->tableName, $data);
     }
 
-    protected function update(...$data): void
+    protected function update(array $data): void
     {
         $this->resourceConnection->getConnection()->update(
             (string) $this->tableName,
@@ -100,7 +100,7 @@ class SimpleReadModel implements \Prooph\EventStore\Projection\ReadModel
         );
     }
 
-    protected function remove(...$data): void
+    protected function remove(array $data): void
     {
         $this->resourceConnection->getConnection()->delete(
             (string) $this->tableName,
