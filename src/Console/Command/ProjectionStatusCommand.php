@@ -7,6 +7,7 @@
 declare(strict_types=1);
 namespace ReachDigital\ProophEventStore\Console\Command;
 
+use Prooph\EventStore\Exception\ProjectionNotFound;
 use Prooph\EventStore\Projection\ProjectionManager;
 use ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionContextPool;
 use Symfony\Component\Console\Helper\Table;
@@ -46,22 +47,27 @@ class ProjectionStatusCommand extends \Symfony\Component\Console\Command\Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $table = (new Table($output))->setHeaders(['Projection', 'Position', 'Status', 'State']);
+        $table = (new Table($output))->setHeaders(['Projection', 'Position', 'Status']);
 
         foreach ($this->projectionContextPool->all() as $projectionContext) {
-            $streamPositions = $this->projectionManager->fetchProjectionStreamPositions($projectionContext->name());
-            $streamPositionOutput = [];
-            foreach ($streamPositions as $stream => $position) {
-                $streamPositionOutput[] = "{$stream}: {$position}";
-            }
-            $streamPositionOutput = implode("\n", $streamPositionOutput);
 
-            $table->addRow([
-                $projectionContext->name(),
-                $streamPositionOutput,
-                $this->projectionManager->fetchProjectionStatus($projectionContext->name())->getValue(),
-                \json_encode($this->projectionManager->fetchProjectionState($projectionContext->name())),
-            ]);
+            try {
+                $streamPositions = $this->projectionManager->fetchProjectionStreamPositions($projectionContext->name());
+                $streamPositionOutput = [];
+                foreach ($streamPositions as $stream => $position) {
+                    $streamPositionOutput[] = "{$stream}: {$position}";
+                }
+                $streamPositionOutput = implode("\n", $streamPositionOutput);
+
+                $table->addRow([
+                    $projectionContext->name(),
+                    $streamPositionOutput,
+                    $this->projectionManager->fetchProjectionStatus($projectionContext->name())->getValue()
+                ]);
+            } catch (ProjectionNotFound $exception) {
+                $table->addRow([$projectionContext->name(), 'unknown', 'uninitialized']);
+            }
+
         }
 
         $table->render();
