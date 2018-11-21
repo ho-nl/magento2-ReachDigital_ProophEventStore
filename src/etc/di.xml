@@ -56,6 +56,9 @@
         <!--</arguments>-->
     <!--</type>-->
 
+    <!-- @fixme Quick hack to get stuff working again, should probably refactor into PersistenceStrategyProxy -->
+    <preference for="Prooph\EventStore\Pdo\PersistenceStrategy" type="ReachDigital\ProophEventStore\Infrastructure\EventStore\MysqlSingleStreamStrategyProxy"/>
+
     <type name="Prooph\EventStore\Pdo\MySqlEventStore">
         <arguments>
             <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo\Connection</argument>
