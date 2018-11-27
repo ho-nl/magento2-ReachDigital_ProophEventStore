@@ -12,10 +12,8 @@ use Prooph\EventStore\EventStore;
 use Prooph\EventStore\Metadata\MetadataMatcher;
 use Prooph\EventStore\Pdo\MariaDbEventStoreFactory;
 use Prooph\EventStore\Pdo\MySqlEventStoreFactory;
-use Prooph\EventStore\Plugin\UpcastingPlugin;
 use Prooph\EventStore\Stream;
 use Prooph\EventStore\StreamName;
-use Prooph\EventStore\Upcasting\UpcasterChain;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbType;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbTypeResolver;
 
@@ -40,18 +38,11 @@ class EventStoreProxy implements EventStore
                 'persistenceStrategy' => $mariaDbSingleStreamStrategy->create()
             ]);
         }
-
-//        (new UpcastingPlugin($upcasterChain))->attachToEventStore($this->eventStore);
     }
 
     public function instance(): EventStore
     {
         return $this->eventStore;
-    }
-
-    public function eventStorePlugin(EventStore $eventStore): void
-    {
-        //Add upcasting plugin http://docs.getprooph.org/event-store/upcasting.html
     }
 
     public function updateStreamMetadata(StreamName $streamName, array $newMetadata): void

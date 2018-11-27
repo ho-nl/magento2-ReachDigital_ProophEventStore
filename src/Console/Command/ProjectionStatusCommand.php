@@ -16,25 +16,17 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class ProjectionStatusCommand extends \Symfony\Component\Console\Command\Command
 {
-
     /**
      * @var ProjectionContextPool
      */
     private $projectionContextPool;
 
-    /**
-     * @var ProjectionManager
-     */
-    private $projectionManager;
-
     public function __construct(
         ProjectionContextPool $projectionContextPool,
-        ProjectionManager $projectionManager,
         ?string $name = null
     ) {
         parent::__construct($name);
         $this->projectionContextPool = $projectionContextPool;
-        $this->projectionManager = $projectionManager;
     }
 
     protected function configure()
@@ -51,7 +43,7 @@ class ProjectionStatusCommand extends \Symfony\Component\Console\Command\Command
 
         foreach ($this->projectionContextPool->all() as $projectionContext) {
             try {
-                $streamPositions = $this->projectionManager->fetchProjectionStreamPositions($projectionContext->name());
+                $streamPositions = $projectionContext->projectionManager()->fetchProjectionStreamPositions($projectionContext->name());
                 $streamPositionOutput = [];
                 foreach ($streamPositions as $stream => $position) {
                     $streamPositionOutput[] = "{$stream}: {$position}";
@@ -61,7 +53,7 @@ class ProjectionStatusCommand extends \Symfony\Component\Console\Command\Command
                 $table->addRow([
                     $projectionContext->name(),
                     $streamPositionOutput,
-                    $this->projectionManager->fetchProjectionStatus($projectionContext->name())->getValue()
+                    $projectionContext->projectionManager()->fetchProjectionStatus($projectionContext->name())->getValue()
                 ]);
             } catch (ProjectionNotFound $exception) {
                 $table->addRow([$projectionContext->name(), 'unknown', 'uninitialized']);

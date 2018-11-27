@@ -11,6 +11,8 @@ use Prooph\Common\Event\ActionEventEmitter;
 use Prooph\EventStore\ActionEventEmitterEventStoreFactory;
 use Prooph\EventStoreBusBridge\EventPublisher;
 use Prooph\EventStoreBusBridge\EventPublisherFactory;
+use Prooph\ServiceBus\Plugin\Router\EventRouter;
+use ReachDigital\ProophEventStore\Infrastructure\EventStore\AttachUpcasterToEventStore;
 
 class EventBus extends \Prooph\ServiceBus\EventBus
 {
@@ -18,7 +20,8 @@ class EventBus extends \Prooph\ServiceBus\EventBus
         ActionEventEmitter $actionEventEmitter,
         EventRouter $eventRouter,
         EventPublisherFactory $eventPublisherFactory,
-        ActionEventEmitterEventStoreFactory $actionEventEmitterEventStoreFactory
+        ActionEventEmitterEventStoreFactory $actionEventEmitterEventStoreFactory,
+        AttachUpcasterToEventStore $attachUpcasterToEventStore
     ) {
         parent::__construct($actionEventEmitter);
         $eventRouter->attachToMessageBus($this);
@@ -31,6 +34,9 @@ class EventBus extends \Prooph\ServiceBus\EventBus
             'actionEventEmitter' => $actionEventEmitter
         ]);
         $eventPublisher->attachToEventStore($actionEventEmitterEventStore);
+
+        $attachUpcasterToEventStore->attach($actionEventEmitterEventStore);
+
         $this->construct();
     }
 
