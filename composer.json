@@ -1,7 +1,7 @@
 {
     "name": "reach-digital/magento2-prooph-event-store",
     "description": "Reach Digital Prooph bridge",
-    "version": "2.0.0-beta5",
+    "version": "2.0.0-beta6",
     "require": {
         "php": "~7.1.0",
         "mindplay/composer-locator": "^2.1",
