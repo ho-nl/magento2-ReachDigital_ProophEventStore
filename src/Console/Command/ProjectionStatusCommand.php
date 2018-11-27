@@ -50,7 +50,6 @@ class ProjectionStatusCommand extends \Symfony\Component\Console\Command\Command
         $table = (new Table($output))->setHeaders(['Projection', 'Position', 'Status']);
 
         foreach ($this->projectionContextPool->all() as $projectionContext) {
-
             try {
                 $streamPositions = $this->projectionManager->fetchProjectionStreamPositions($projectionContext->name());
                 $streamPositionOutput = [];

@@ -5,12 +5,12 @@
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
-                <item name="prooph-projection-delete" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand\Proxy</item>
-                <item name="prooph-projection-reset" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionResetCommand\Proxy</item>
-                <item name="prooph-projection-run" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunCommand\Proxy</item>
-                <item name="prooph-projection-run-all" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunAllCommand\Proxy</item>
-                <item name="prooph-projection-stop" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand\Proxy</item>
-                <item name="prooph-projection-status" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStatusCommand\Proxy</item>
+                <item name="prooph-projection-delete" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand</item>
+                <item name="prooph-projection-reset" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionResetCommand</item>
+                <item name="prooph-projection-run" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunCommand</item>
+                <item name="prooph-projection-run-all" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunAllCommand</item>
+                <item name="prooph-projection-stop" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand</item>
+                <item name="prooph-projection-status" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStatusCommand</item>
             </argument>
         </arguments>
     </type>
@@ -47,29 +47,15 @@
     <!-- EventStore Configuration -->
     <preference for="Prooph\EventStore\EventStore" type="ReachDigital\ProophEventStore\Infrastructure\EventStore\EventStoreProxy"/>
 
-    <!--<type name="Prooph\EventStore\Upcasting\UpcasterChain">-->
-        <!--<arguments>-->
-            <!--<argument name="upcasters" xsi:type="array">-->
-                <!--&lt;!&ndash; To implement your own upcaster see http://docs.getprooph.org/event-store/upcasting.html &ndash;&gt;-->
-                <!--&lt;!&ndash;<item name="my-event-upcast" xsi:type="object">Prooph\EventStore\Upcasting\Upcaster</item>&ndash;&gt;-->
-            <!--</argument>-->
-        <!--</arguments>-->
-    <!--</type>-->
-
-    <!-- @fixme Quick hack to get stuff working again, should probably refactor into PersistenceStrategyProxy -->
-    <preference for="Prooph\EventStore\Pdo\PersistenceStrategy" type="ReachDigital\ProophEventStore\Infrastructure\EventStore\MysqlSingleStreamStrategyProxy"/>
-
     <type name="Prooph\EventStore\Pdo\MySqlEventStore">
         <arguments>
             <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo\Connection</argument>
-            <argument name="persistenceStrategy" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\EventStore\MysqlSingleStreamStrategyProxy</argument>
         </arguments>
     </type>
 
     <type name="Prooph\EventStore\Pdo\MariaDbEventStore">
         <arguments>
             <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo\Connection</argument>
-            <argument name="persistenceStrategy" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\EventStore\MariaDbSingleStreamStrategyProxy</argument>
         </arguments>
     </type>
 
@@ -81,21 +67,27 @@
         </arguments>
     </type>
 
-
-    <!-- Configuring the ProjectionManager -->
+    <!-- Configuring the ProjectionManager: http://docs.getprooph.org/event-store/projections.html -->
     <preference for="Prooph\EventStore\Projection\ProjectionManager" type="ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionManagerProxy"/>
 
     <type name="Prooph\EventStore\Pdo\Projection\MySqlProjectionManager">
         <arguments>
             <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo\Connection</argument>
-            <argument name="eventStore" xsi:type="object">Prooph\EventStore\Pdo\MySqlEventStore</argument>
         </arguments>
     </type>
 
     <type name="Prooph\EventStore\Pdo\Projection\MariaDbProjectionManager">
         <arguments>
             <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo\Connection</argument>
-            <argument name="eventStore" xsi:type="object">Prooph\EventStore\Pdo\MariaDbEventStore</argument>
+        </arguments>
+    </type>
+
+    <!-- Upcaster Configuration: http://docs.getprooph.org/event-store/upcasting.html -->
+    <type name="Prooph\EventStore\Upcasting\UpcasterChain">
+        <arguments>
+            <argument name="upcasters" xsi:type="array">
+                <item name="my-event-upcast" xsi:type="object">Prooph\EventStore\Upcasting\NoOpEventUpcaster</item>
+            </argument>
         </arguments>
     </type>
 </config>
