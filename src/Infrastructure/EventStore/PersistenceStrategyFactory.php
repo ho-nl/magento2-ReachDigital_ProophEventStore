@@ -16,8 +16,8 @@ class PersistenceStrategyFactory
 
     public function __construct(
         DbTypeResolver $dbTypeResolver,
-        MysqlSingleStreamStrategyProxyFactory $mysqlSingleStreamStrategyProxFactory,
-        MariaDbSingleStreamStrategyProxyFactory $mariaDbSingleStreamStrategyProxyFactory
+        MysqlSingleStreamStrategyFactory $mysqlSingleStreamStrategyProxFactory,
+        MariaDbSingleStreamStrategyFactory $mariaDbSingleStreamStrategyProxyFactory
     ) {
         if ($dbTypeResolver->get()->equals(DbType::mySql())) {
             $this->instance = $mysqlSingleStreamStrategyProxFactory->create();

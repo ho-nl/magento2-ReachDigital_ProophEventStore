@@ -12,9 +12,9 @@ use Iterator;
 use Prooph\Common\Messaging\MessageConverter;
 use Prooph\EventStore\Pdo\DefaultMessageConverter;
 use Prooph\EventStore\Pdo\HasQueryHint;
-use Prooph\EventStore\Pdo\MariaDBIndexedPersistenceStrategy;
 use Prooph\EventStore\Pdo\PersistenceStrategy;
 use Prooph\EventStore\StreamName;
+use Prooph\EventStore\Util\Assertion;
 
 /**
  * Class MySqlSingleStreamStrategy
@@ -23,7 +23,7 @@ use Prooph\EventStore\StreamName;
  *
  * @package ReachDigital\ProophEventStore\PdoEventStore\PersistenceStrategy
  */
-final class MariaDbSingleStreamStrategyProxy implements PersistenceStrategy, HasQueryHint, MariaDBIndexedPersistenceStrategy
+final class MysqlSingleStreamStrategy implements PersistenceStrategy, HasQueryHint
 {
     /**
      * @var PersistenceStrategy\MySqlSingleStreamStrategy
@@ -39,14 +39,13 @@ final class MariaDbSingleStreamStrategyProxy implements PersistenceStrategy, Has
         GetSingleStreamStrategyTableName $getSingleStreamStrategyTableName,
         ?MessageConverter $messageConverter = null
     ) {
-        $this->streamStrategy = new PersistenceStrategy\MariaDbSingleStreamStrategy(
+        $this->streamStrategy = new PersistenceStrategy\MySqlSingleStreamStrategy(
             $messageConverter ?? new DefaultMessageConverter()
         );
         $this->getSingleStreamStrategyTableName = $getSingleStreamStrategyTableName;
     }
 
     /**
-     * @param string $tableName
      * @return string[]
      */
     public function createSchema(string $tableName): array
@@ -64,11 +63,6 @@ final class MariaDbSingleStreamStrategyProxy implements PersistenceStrategy, Has
         return $this->streamStrategy->prepareData($streamEvents);
     }
 
-
-    public function indexedMetadataFields(): array
-    {
-        return $this->streamStrategy->indexedMetadataFields();
-    }
 
     public function generateTableName(StreamName $streamName): string
     {

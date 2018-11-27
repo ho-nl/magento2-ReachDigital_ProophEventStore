@@ -17,6 +17,7 @@ use Prooph\EventStore\Projection\Projector;
 use Prooph\EventStore\Projection\Query;
 use Prooph\EventStore\Projection\ReadModel;
 use Prooph\EventStore\Projection\ReadModelProjector;
+use ReachDigital\ProophEventStore\Infrastructure\EventStore\EventStoreProxy;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbType;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbTypeResolver;
 
@@ -29,12 +30,17 @@ class ProjectionManagerProxy implements ProjectionManager
     public function __construct(
         MySqlProjectionManagerFactory $mySqlProjectionManagerFactory,
         MariaDbProjectionManagerFactory $mariaDbProjectionManagerFactory,
+        EventStoreProxy $eventStoreProxy,
         DbTypeResolver $dbTypeResolver
     ) {
         if ($dbTypeResolver->get()->equals(DbType::mySql())) {
-            $this->projectionManager = $mySqlProjectionManagerFactory->create();
+            $this->projectionManager = $mySqlProjectionManagerFactory->create([
+                'eventStore' => $eventStoreProxy->instance()
+            ]);
         } else {
-            $this->projectionManager = $mariaDbProjectionManagerFactory->create();
+            $this->projectionManager = $mariaDbProjectionManagerFactory->create([
+                'eventStore' => $eventStoreProxy->instance()
+            ]);
         }
     }
 

@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace ReachDigital\ProophEventStore\Infrastructure\EventStore;
 
 use Iterator;
+use Prooph\EventStore\EventStore;
 use Prooph\EventStore\Metadata\MetadataMatcher;
 use Prooph\EventStore\Pdo\MariaDbEventStoreFactory;
 use Prooph\EventStore\Pdo\MySqlEventStoreFactory;
@@ -18,26 +19,37 @@ use Prooph\EventStore\Upcasting\UpcasterChain;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbType;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo\DbTypeResolver;
 
-class EventStoreProxy implements \Prooph\EventStore\EventStore
+class EventStoreProxy implements EventStore
 {
-    /** @var \Prooph\EventStore\EventStore */
+    /** @var EventStore */
     private $eventStore;
 
     public function __construct(
         MysqlEventStoreFactory $mySqlEventStoreFactory,
+        MysqlSingleStreamStrategyFactory $mysqlSingleStreamStrategyFactory,
         MariaDbEventStoreFactory $mariaDbEventStoreFactory,
+        MariaDbSingleStreamStrategyFactory $mariaDbSingleStreamStrategy,
         DbTypeResolver $dbTypeResolver
     ) {
         if ($dbTypeResolver->get()->equals(DbType::mySql())) {
-            $this->eventStore = $mySqlEventStoreFactory->create();
+            $this->eventStore = $mySqlEventStoreFactory->create([
+                'persistenceStrategy' => $mysqlSingleStreamStrategyFactory->create()
+            ]);
         } else {
-            $this->eventStore = $mariaDbEventStoreFactory->create();
+            $this->eventStore = $mariaDbEventStoreFactory->create([
+                'persistenceStrategy' => $mariaDbSingleStreamStrategy->create()
+            ]);
         }
 
 //        (new UpcastingPlugin($upcasterChain))->attachToEventStore($this->eventStore);
     }
 
-    public function eventStorePlugin(\Prooph\EventStore\EventStore $eventStore): void
+    public function instance(): EventStore
+    {
+        return $this->eventStore;
+    }
+
+    public function eventStorePlugin(EventStore $eventStore): void
     {
         //Add upcasting plugin http://docs.getprooph.org/event-store/upcasting.html
     }
