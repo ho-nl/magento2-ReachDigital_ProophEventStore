@@ -20,8 +20,7 @@ class EventBus extends \Prooph\ServiceBus\EventBus
         ActionEventEmitter $actionEventEmitter,
         EventRouter $eventRouter,
         EventPublisherFactory $eventPublisherFactory,
-        ActionEventEmitterEventStoreFactory $actionEventEmitterEventStoreFactory,
-        AttachUpcasterToEventStore $attachUpcasterToEventStore
+        ActionEventEmitterEventStoreFactory $actionEventEmitterEventStoreFactory
     ) {
         parent::__construct($actionEventEmitter);
         $eventRouter->attachToMessageBus($this);
@@ -34,8 +33,6 @@ class EventBus extends \Prooph\ServiceBus\EventBus
             'actionEventEmitter' => $actionEventEmitter
         ]);
         $eventPublisher->attachToEventStore($actionEventEmitterEventStore);
-
-        $attachUpcasterToEventStore->attach($actionEventEmitterEventStore);
 
         $this->construct();
     }

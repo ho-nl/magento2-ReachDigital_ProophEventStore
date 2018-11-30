@@ -40,11 +40,11 @@
     <preference for="Prooph\EventStore\Projection\ProjectionManager" type="ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionManagerProxy"/>
 
     <!-- Upcaster Configuration: http://docs.getprooph.org/event-store/upcasting.html -->
-    <type name="Prooph\EventStore\Upcasting\UpcasterChain">
-        <arguments>
-            <argument name="upcasters" xsi:type="array">
-                <item name="noop-event-upcaster" xsi:type="object">Prooph\EventStore\Upcasting\NoOpEventUpcaster</item>
-            </argument>
-        </arguments>
-    </type>
+    <!--<type name="Prooph\EventStore\Upcasting\UpcasterChain">-->
+        <!--<arguments>-->
+            <!--<argument name="upcasters" xsi:type="array">-->
+                <!--<item name="noop-event-upcaster" xsi:type="object">Prooph\EventStore\Upcasting\NoOpEventUpcaster</item>-->
+            <!--</argument>-->
+        <!--</arguments>-->
+    <!--</type>-->
 </config>
