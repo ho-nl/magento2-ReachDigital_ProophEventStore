@@ -10,8 +10,8 @@ use PHPUnit\Framework\TestCase;
 use Prooph\EventStore\Pdo\Projection\MySqlProjectionManager;
 use Prooph\EventStore\Projection\ReadModelProjector;
 use ReachDigital\ProophEventStore\Api\ProjectionInterface;
-use ReachDigital\ProophEventStore\Infrastructure\ProjectionContext;
-use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
+use ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionContext;
+use ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionContextPool;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserProjection;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection\UserReadModel;
 

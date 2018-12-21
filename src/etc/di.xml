@@ -1,65 +1,50 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Define all cli commands -->
     <type name="Magento\Framework\Console\CommandList">
         <arguments>
             <argument name="commands" xsi:type="array">
                 <item name="prooph-projection-delete" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionDeleteCommand</item>
-                <item name="prooph-projection-names" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionNamesCommand</item>
                 <item name="prooph-projection-reset" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionResetCommand</item>
                 <item name="prooph-projection-run" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunCommand</item>
-                <item name="prooph-projection-state" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStateCommand</item>
+                <item name="prooph-projection-run-all" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionRunAllCommand</item>
                 <item name="prooph-projection-stop" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStopCommand</item>
-                <item name="prooph-projection-stream-positions" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStreamPositionsCommand</item>
+                <item name="prooph-projection-status" xsi:type="object">ReachDigital\ProophEventStore\Console\Command\ProjectionStatusCommand</item>
             </argument>
         </arguments>
     </type>
 
-    <preference for="Prooph\ServiceBus\CommandBus" type="ReachDigital\ProophEventStore\Infrastructure\CommandBus"/>
-    <type name="ReachDigital\ProophEventStore\Infrastructure\CommandBus">
-        <arguments>
-            <argument name="actionEventEmitter" xsi:type="object" shared="false">Prooph\Common\Event\ProophActionEventEmitter</argument>
-        </arguments>
-    </type>
+    <!-- Messagebus Configuration -->
+    <preference for="Prooph\Common\Event\ActionEventEmitter" type="Prooph\Common\Event\ProophActionEventEmitter"/>
+    <preference for="Prooph\ServiceBus\CommandBus" type="ReachDigital\ProophEventStore\Infrastructure\ServiceBus\CommandBus"/>
+    <preference for="Prooph\ServiceBus\EventBus" type="ReachDigital\ProophEventStore\Infrastructure\ServiceBus\EventBus" />
+    <preference for="Prooph\ServiceBus\QueryBus" type="ReachDigital\ProophEventStore\Infrastructure\ServiceBus\QueryBus" />
 
-    <preference for="Prooph\ServiceBus\EventBus" type="ReachDigital\ProophEventStore\Infrastructure\EventBus" />
-    <preference for="Prooph\ServiceBus\Plugin\Router\EventRouter" type="ReachDigital\ProophEventStore\Infrastructure\EventRouter"/>
-    <type name="ReachDigital\ProophEventStore\Infrastructure\EventBus">
-        <arguments>
-            <argument name="actionEventEmitter" xsi:type="object" shared="false">Prooph\Common\Event\ProophActionEventEmitter</argument>
-        </arguments>
-    </type>
+    <!-- Database Connection Setup -->
+    <preference for="PDO" type="ReachDigital\ProophEventStore\Infrastructure\Pdo\Connection"/>
 
-    <preference for="Prooph\ServiceBus\QueryBus" type="ReachDigital\ProophEventStore\Infrastructure\QueryBus" />
-    <type name="ReachDigital\ProophEventStore\Infrastructure\QueryBus">
-        <arguments>
-            <argument name="actionEventEmitter" xsi:type="object" shared="false">Prooph\Common\Event\ProophActionEventEmitter</argument>
-        </arguments>
-    </type>
+    <!-- EventStore Configuration -->
+    <preference for="Prooph\EventStore\EventStore" type="ReachDigital\ProophEventStore\Infrastructure\EventStore\EventStoreProxy"/>
 
-    <preference for="Prooph\EventStore\EventStore" type="Prooph\EventStore\Pdo\MySqlEventStore"/>
+    <!-- EventStore PDO configuration -->
     <preference for="Prooph\Common\Messaging\MessageFactory" type="Prooph\Common\Messaging\FQCNMessageFactory"/>
-    <preference for="Prooph\EventStore\Pdo\PersistenceStrategy" type="ReachDigital\ProophEventStore\PdoEventStore\PersistenceStrategy\MySqlSingleStreamStrategy"/>
-    <preference for="Prooph\SnapshotStore\SnapshotStore" type="Prooph\SnapshotStore\Pdo\PdoSnapshotStore"/>
+
+    <!-- EventSourcing -->
     <preference for="Prooph\EventSourcing\Aggregate\AggregateTranslator" type="Prooph\EventSourcing\EventStoreIntegration\AggregateTranslator"/>
 
-    <preference for="PDO" type="ReachDigital\ProophEventStore\Infrastructure\Pdo"/>
+    <!-- ShapshotStore Configuration -->
+    <preference for="Prooph\SnapshotStore\SnapshotStore" type="Prooph\SnapshotStore\Pdo\PdoSnapshotStore"/>
 
-    <type name="Prooph\EventStore\Pdo\MySqlEventStore">
-        <arguments>
-            <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo</argument>
-        </arguments>
-    </type>
+    <!-- Configuring the ProjectionManager: http://docs.getprooph.org/event-store/projections.html -->
+    <preference for="Prooph\EventStore\Projection\ProjectionManager" type="ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionManagerProxy"/>
 
-    <type name="Prooph\SnapshotStore\Pdo\PdoSnapshotStore">
-        <arguments>
-            <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo</argument>
-        </arguments>
-    </type>
-
-    <type name="Prooph\EventStore\Pdo\Projection\MySqlProjectionManager">
-        <arguments>
-            <argument name="connection" xsi:type="object">ReachDigital\ProophEventStore\Infrastructure\Pdo</argument>
-        </arguments>
-    </type>
+    <!-- Upcaster Configuration: http://docs.getprooph.org/event-store/upcasting.html -->
+    <!--<type name="Prooph\EventStore\Upcasting\UpcasterChain">-->
+        <!--<arguments>-->
+            <!--<argument name="upcasters" xsi:type="array">-->
+                <!--<item name="noop-event-upcaster" xsi:type="object">Prooph\EventStore\Upcasting\NoOpEventUpcaster</item>-->
+            <!--</argument>-->
+        <!--</arguments>-->
+    <!--</type>-->
 </config>

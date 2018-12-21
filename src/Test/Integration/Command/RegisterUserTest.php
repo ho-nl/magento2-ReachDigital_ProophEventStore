@@ -7,10 +7,10 @@ namespace ReachDigital\ProophEventStore\Test\Integration\Command;
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
 use PHPUnit\Framework\TestCase;
+use Prooph\ServiceBus\CommandBus;
 use Prooph\ServiceBus\Plugin\Router\CommandRouter;
 use Ramsey\Uuid\Uuid;
-use ReachDigital\ProophEventStore\Infrastructure\CommandBus;
-use ReachDigital\ProophEventStore\Infrastructure\EventBus;
+use ReachDigital\ProophEventStore\Infrastructure\ServiceBus\EventBus;
 use ReachDigital\ProophEventStore\ProophEventStoreContext;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure\UserRepository;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Command\ChangeEmail;
@@ -41,17 +41,16 @@ class RegisterUserTest extends TestCase
         $commandBus = $es->commandBus();
         $this->assertInstanceOf(CommandBus::class, $commandBus);
 
-        $commandBusEventsRefl = (new \ReflectionProperty($commandBus, 'events'));
+        $commandBusEventsRefl = new \ReflectionProperty($commandBus, 'events');
         $commandBusEventsRefl->setAccessible(true);
         $commandBusEvents = $commandBusEventsRefl->getValue($commandBus);
 
 
-        /** @var EventBus $commandBus */
         $eventBus = $this->objectManager->get(EventBus::class);
         $this->assertInstanceOf(EventBus::class, $eventBus);
 
 
-        $eventBusEventsRefl = (new \ReflectionProperty($eventBus, 'events'));
+        $eventBusEventsRefl = new \ReflectionProperty($eventBus, 'events');
         $eventBusEventsRefl->setAccessible(true);
         $eventBusEvents = $eventBusEventsRefl->getValue($eventBus);
 

@@ -6,26 +6,30 @@
 
 declare(strict_types=1);
 
-namespace ReachDigital\ProophEventStore\Infrastructure;
+namespace ReachDigital\ProophEventStore\Infrastructure\ServiceBus;
 
-use Magento\Framework\Event\Manager;
+use Magento\Framework\Event\Manager as EventManager;
 use Prooph\Common\Event\ActionEventEmitter;
 
-//@todo move to Infrastructure\Bus namespace
+/**
+ * Class CommandBus
+ * @todo Remove EventManager in Magento 2.3, all listeners can be replaced by plugins
+ * @package ReachDigital\ProophEventStore\Infrastructure
+ */
 class CommandBus extends \Prooph\ServiceBus\CommandBus
 {
     /** @var CommandRouter */
     private $commandRouter;
 
     /**
-     * @var Manager
+     * @var EventManager
      */
     private $eventManager;
 
     public function __construct(
         ActionEventEmitter $actionEventEmitter = null,
         CommandRouter $commandRouter,
-        Manager $eventManager
+        EventManager $eventManager
     ) {
         parent::__construct($actionEventEmitter);
         $this->commandRouter = $commandRouter;
@@ -33,7 +37,7 @@ class CommandBus extends \Prooph\ServiceBus\CommandBus
         $commandRouter->attachToMessageBus($this);
     }
 
-    public function commandRouter()
+    public function commandRouter(): CommandRouter
     {
         return $this->commandRouter;
     }

@@ -3,13 +3,16 @@
  * Copyright © Reach Digital (https://www.reachdigital.io/)
  * See LICENSE.txt for license details.
  */
+
+declare(strict_types=1);
+
 namespace ReachDigital\ProophEventStore\Setup;
 
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\UninstallInterface;
 
-class UninstallSchema implements UninstallInterface
+class Uninstall implements UninstallInterface
 {
 
     /**
@@ -23,6 +26,8 @@ class UninstallSchema implements UninstallInterface
     public function uninstall(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
+
+        //Delete sequence tales.
 
         if ($setup->getConnection()->isTableExists('event_streams')) {
             $setup->getConnection()->dropTable('event_streams');

@@ -110,6 +110,29 @@ A feature usually doesn't exist in a vacuum, so we need to integrate it with the
 - Controllers
 - UI
 
+
+## Create a Admin Grid event store Projection
+
+We're creating a [projection](http://docs.getprooph.org/event-store/projections.html) which is like a Magento index,
+but easier to create and more flexible and stable. After that we're going to render the data in an admin grid.
+
+### Creating a projection
+
+To register a new projection 
+
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/etc/di.xml
+
+- Add a menu: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/etc/adminhtml/menu.xml
+- Add a route: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/etc/adminhtml/routes.xml
+- Add a controller: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/Controller/Adminhtml/Index/Index.php
+- Add a layout file: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/view/adminhtml/layout/transfer_order_index_index.xml
+- Add a di file: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/etc/di.xml
+- Add a ui_component file: https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/blob/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI/view/adminhtml/ui_component/transfer_order_listing.xml
+
+
+https://github.com/ho-nl/magento2-ReachDigital-TransferOrdersES/tree/36d99dcba37dff98ddb49c255a856f4d0f0af6e3/TransferOrdersESAdminUI
+
+
 ## Usage
 
 To use the Prooph components in your application, use:
@@ -126,43 +149,90 @@ $this->proophEventStoreContext->queryBus()->dispatch($query)->then(function($res
 ### Adding commands
 
 ```xml
-<type name="ReachDigital\ProophEventStore\Infrastructure\CommandRouter">
-  <arguments>
-    <argument name="messageMap" xsi:type="array">
-      <item name="ReachDigital\MyModule\Model\ProductPlan\Command\MyCommand"
-                 xsi:type="object">ReachDigital\MyModule\Model\ProductPlan\Handler\MyCommandHandler</item>
-    </argument>
-  </arguments>
-</type>
-
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="ReachDigital\ProophEventStore\Infrastructure\CommandRouter">
+      <arguments>
+        <argument name="messageMap" xsi:type="array">
+          <item name="ReachDigital\MyModule\Model\ProductPlan\Command\MyCommand"
+                     xsi:type="object">ReachDigital\MyModule\Model\ProductPlan\Handler\MyCommandHandler</item>
+        </argument>
+      </arguments>
+    </type>
+</config>
 ```
 
 ### Adding queries
 
 ```xml
-<type name="ReachDigital\ProophEventStore\Infrastructure\QueryRouter">
-    <arguments>
-        <argument name="messageMap" xsi:type="array">
-            <item name="ReachDigital\Subscription\Model\Subscription\Query\GetOrderSchedule"
-                  xsi:type="object">ReachDigital\Subscription\Model\Subscription\Handler\GetOrderScheduleHandler</item>
-            <item name="ReachDigital\Subscription\Model\Subscription\Query\GetOrderHistory"
-                  xsi:type="object">ReachDigital\Subscription\Model\Subscription\Handler\GetOrderHistoryHandler</item>
-        </argument>
-    </arguments>
-</type>
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="ReachDigital\ProophEventStore\Infrastructure\QueryRouter">
+        <arguments>
+            <argument name="messageMap" xsi:type="array">
+                <item name="ReachDigital\Subscription\Model\Subscription\Query\GetOrderSchedule"
+                      xsi:type="object">ReachDigital\Subscription\Model\Subscription\Handler\GetOrderScheduleHandler</item>
+                <item name="ReachDigital\Subscription\Model\Subscription\Query\GetOrderHistory"
+                      xsi:type="object">ReachDigital\Subscription\Model\Subscription\Handler\GetOrderHistoryHandler</item>
+            </argument>
+        </arguments>
+    </type>
+</config>
 ```
 
 ### Adding AggregateRoot Collections
 
 
 ```xml
-<preference for="ReachDigital\Subscription\Model\Subscription\SubscriptionCollection"
-            type="ReachDigital\Subscription\Infrastructure\Repository\EventStoreSubscriptionCollection"/>
-<type name="ReachDigital\Subscription\Infrastructure\Repository\EventStoreSubscriptionCollection">
-    <arguments>
-        <argument name="aggregateRoot" xsi:type="string">ReachDigital\Subscription\Model\Subscription\Subscription</argument>
-        <argument name="streamName" xsi:type="string">subscription</argument>
-    </arguments>
-</type>
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="ReachDigital\Subscription\Model\Subscription\SubscriptionCollection"
+                type="ReachDigital\Subscription\Infrastructure\Repository\EventStoreSubscriptionCollection"/>
+    <type name="ReachDigital\Subscription\Infrastructure\Repository\EventStoreSubscriptionCollection">
+        <arguments>
+            <argument name="aggregateRoot" xsi:type="string">ReachDigital\Subscription\Model\Subscription\Subscription</argument>
+            <argument name="streamName" xsi:type="string">subscription</argument>
+        </arguments>
+    </type>
+</config>
 ```
+
+## Setting up crons
     
+
+locked_until value renderen in status command.
+
+
+//Stop & halt
+
+//Wait until stopped
+
+//Do upgrade dingen
+
+//Reset Projection
+
+//Run
+
+//If crashed, rerun
+
+## Setting up crons
+
+```
+* * * * * flock ~/.transferOrderGridLock php bin/magento event-store:projection:run transferOrderGrid
+* * * * * flock ~/.someOtherProjection php bin/magento event-store:projection:run someOtherProjection
+```
+
+Then after deployment do:
+```
+php bin/magento event-store:projection:reset transferOrderGrid
+php bin/magento event-store:projection:reset someOtherProjection
+```
+
+This will automatically completely regenerate the projection. This might not be completely ideal as this is a full
+reindex, but since we dont know if the projection class or db schema has changed we can't know for sure if it is 
+required.
+
+Also this requires modifying the cron when a projection changes, so this requires some additional todo's

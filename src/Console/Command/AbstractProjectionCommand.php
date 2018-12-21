@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace ReachDigital\ProophEventStore\Console\Command;
 
-use ReachDigital\ProophEventStore\Infrastructure\ProjectionContext;
-use ReachDigital\ProophEventStore\Infrastructure\ProjectionContextPool;
+use ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionContext;
+use ReachDigital\ProophEventStore\Infrastructure\Projection\ProjectionContextPool;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

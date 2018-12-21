@@ -6,7 +6,6 @@ namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure
 
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
-use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure\UserRepository;
 
 class UserRepositoryTest extends TestCase
 {

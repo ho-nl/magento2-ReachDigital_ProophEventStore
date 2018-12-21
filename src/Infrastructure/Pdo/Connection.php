@@ -1,15 +1,16 @@
 <?php
+/**
+ * Copyright © Reach Digital (https://www.reachdigital.io/)
+ * See LICENSE.txt for license details.
+ */
 declare(strict_types=1);
 
-
-namespace ReachDigital\ProophEventStore\Infrastructure;
-
+namespace ReachDigital\ProophEventStore\Infrastructure\Pdo;
 
 use Magento\Framework\App\ResourceConnection;
 use Zend_Db_Adapter_Abstract;
 
-//@todo move to Infrastructure\Database namespace
-class Pdo extends \PDO
+class Connection extends \PDO
 {
     public function __construct(
         ResourceConnection $resource
@@ -25,7 +26,7 @@ class Pdo extends \PDO
         $dsn = $this->_dsn($connection->getConfig());
 
         parent::__construct($dsn, $conf['username'], $conf['password'], $conf['options']);
-        $this->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
     /**

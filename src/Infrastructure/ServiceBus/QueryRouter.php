@@ -1,13 +1,14 @@
 <?php
-declare(strict_types=1);
 /**
- * Copyright (c) Reach Digital (https://www.reachdigital.nl/)
- * See README.md for license details.
+ * Copyright © Reach Digital (https://www.reachdigital.io/)
+ * See LICENSE.txt for license details.
  */
 
-namespace ReachDigital\ProophEventStore\Infrastructure;
+declare(strict_types=1);
 
-//@todo move to Infrastructure\Bus namespace
+namespace ReachDigital\ProophEventStore\Infrastructure\ServiceBus;
+
+/** @noinspection LongInheritanceChainInspection */
 class QueryRouter extends \Prooph\ServiceBus\Plugin\Router\QueryRouter
 {
     use FormatEventMapTrait;

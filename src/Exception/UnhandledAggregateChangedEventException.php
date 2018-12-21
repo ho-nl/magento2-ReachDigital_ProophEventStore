@@ -15,13 +15,13 @@ use Prooph\EventSourcing\AggregateRoot;
 class UnhandledAggregateChangedEventException extends LocalizedException
 {
     public static function withEvent(
-        AggregateRoot $aggregateRoot,
+        $sourceClass,
         AggregateChanged $aggregateChanged
     ) : UnhandledAggregateChangedEventException {
         return new self(__(
-            'Missing event handler method %1 for aggregate root %2',
+            'Missing event handler method %1 for %2',
             \get_class($aggregateChanged),
-            \get_class($aggregateRoot)
+            \get_class($sourceClass)
         ));
     }
 }

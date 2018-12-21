@@ -1,16 +1,16 @@
 <?php
-declare(strict_types=1);
 /**
- * Copyright (c) Reach Digital (https://www.reachdigital.nl/)
- * See README.md for license details.
+ * Copyright © Reach Digital (https://www.reachdigital.io/)
+ * See LICENSE.txt for license details.
  */
+declare(strict_types=1);
 
-namespace ReachDigital\ProophEventStore\Infrastructure;
+namespace ReachDigital\ProophEventStore\Infrastructure\ServiceBus;
 
-//@todo move to Infrastructure\Bus namespace
 trait FormatEventMapTrait
 {
     /**
+     * di.xml requires all arrays to have keys, but the CommandBus, QueryBus and EventBus require empty arrays.
      * @param array $eventMap
      * @return array
      */

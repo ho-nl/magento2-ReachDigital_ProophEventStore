@@ -6,7 +6,7 @@ namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection;
 
 
 use Prooph\EventStore\Projection\AbstractReadModel;
-use ReachDigital\ProophEventStore\Infrastructure\Pdo;
+use ReachDigital\ProophEventStore\Infrastructure\Pdo\Connection;
 
 class UserReadModel extends AbstractReadModel
 {
@@ -14,7 +14,7 @@ class UserReadModel extends AbstractReadModel
     
     private $connection;
 
-    public function __construct(Pdo $connection)
+    public function __construct(Connection $connection)
     {
         $this->connection = $connection;
     }
@@ -31,7 +31,7 @@ CREATE TABLE `$tableName` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 EOT;
-        $this->connection->query($sql);
+        $this->connection->exec($sql);
     }
     public function isInitialized(): bool
     {
@@ -39,10 +39,7 @@ EOT;
         $sql = "SHOW TABLES LIKE '$tableName';";
         $statement = $this->connection->query($sql);
         $result = $statement->fetch();
-        if (false === $result) {
-            return false;
-        }
-        return true;
+        return !(false === $result);
     }
     public function reset(): void
     {
