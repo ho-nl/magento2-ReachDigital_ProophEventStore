@@ -2,7 +2,7 @@
   "name": "reach-digital/magento2-prooph-event-store",
   "description": "Reach Digital Prooph bridge",
   "require": {
-    "php": "~7.1.0",
+    "php": "~7.1.0||~7.2.0",
     "prooph/service-bus": "^6.1",
     "prooph/event-sourcing": "^5.2",
     "prooph/event-store": "^7.3",
