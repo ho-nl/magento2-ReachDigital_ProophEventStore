@@ -61,7 +61,7 @@ class ProjectionNamesCommand extends Command
         $this->formatOutput($output);
 
         $filter = $input->getArgument(self::ARGUMENT_FILTER);
-        $regex = $input->getOption(static::OPTION_REGEX);
+        $regex = $input->getOption(self::OPTION_REGEX);
 
         $output->write(sprintf('<action>Projection names'));
         if ($filter) {
