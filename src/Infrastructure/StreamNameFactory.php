@@ -19,9 +19,8 @@ class StreamNameFactory
      */
     private $eventStore;
 
-    public function __construct(
-        EventStore $eventStore
-    ) {
+    public function __construct(EventStore $eventStore)
+    {
         $this->eventStore = $eventStore;
     }
 

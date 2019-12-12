@@ -52,13 +52,7 @@ EOT;
 
     public function columnNames(): array
     {
-        return [
-            'event_id',
-            'event_name',
-            'payload',
-            'metadata',
-            'created_at',
-        ];
+        return ['event_id', 'event_name', 'payload', 'metadata', 'created_at'];
     }
 
     public function prepareData(Iterator $streamEvents): array

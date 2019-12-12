@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Infrastructure;
-
 
 use Prooph\Common\Event\ActionEventEmitter;
 use Prooph\EventStore\ActionEventEmitterEventStoreFactory;
@@ -24,10 +22,10 @@ class EventBus extends \Prooph\ServiceBus\EventBus
 
         /** @var EventPublisher $eventPublisher */
         $eventPublisher = $eventPublisherFactory->create([
-            'eventBus' => $this
+            'eventBus' => $this,
         ]);
         $actionEventEmitterEventStore = $actionEventEmitterEventStoreFactory->create([
-            'actionEventEmitter' => $actionEventEmitter
+            'actionEventEmitter' => $actionEventEmitter,
         ]);
         $eventPublisher->attachToEventStore($actionEventEmitterEventStore);
         $this->construct();

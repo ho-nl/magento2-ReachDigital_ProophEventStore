@@ -12,14 +12,14 @@ class ProjectionResetCommand extends AbstractProjectionCommand
     protected function configure()
     {
         parent::configure();
-        $this
-            ->setName('event-store:projection:reset')
-            ->setDescription('Resets a projection');
+        $this->setName('event-store:projection:reset')->setDescription('Resets a projection');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(sprintf('<action>Resetting projection <highlight>%s</highlight></action>', $this->projectionName));
+        $output->writeln(
+            sprintf('<action>Resetting projection <highlight>%s</highlight></action>', $this->projectionName)
+        );
         $this->projectionContext->projectionManager()->resetProjection($this->projectionName);
     }
 }

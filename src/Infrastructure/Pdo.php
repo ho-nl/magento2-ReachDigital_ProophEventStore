@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Infrastructure;
-
 
 use Magento\Framework\App\ResourceConnection;
 use Zend_Db_Adapter_Abstract;
@@ -11,13 +9,12 @@ use Zend_Db_Adapter_Abstract;
 //@todo move to Infrastructure\Database namespace
 class Pdo extends \PDO
 {
-    public function __construct(
-        ResourceConnection $resource
-    ) {
+    public function __construct(ResourceConnection $resource)
+    {
         $connection = $resource->getConnection();
-        if (! $connection instanceof Zend_Db_Adapter_Abstract) {
+        if (!$connection instanceof Zend_Db_Adapter_Abstract) {
             throw new \RuntimeException(
-                sprintf('Class %s should inherit Zend_Db_Adapter_Abstract'. \get_class($connection))
+                sprintf('Class %s should inherit Zend_Db_Adapter_Abstract' . \get_class($connection))
             );
         }
         /** @var Zend_Db_Adapter_Abstract $connection */

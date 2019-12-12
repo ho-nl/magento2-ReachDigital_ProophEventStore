@@ -32,7 +32,6 @@ class ProjectionNamesCommand extends Command
      */
     private $mySqlProjectionManager;
 
-
     public function __construct(
         ProjectionContextPool $projectionContextPool,
         MySqlProjectionManager $mySqlProjectionManager,
@@ -43,17 +42,15 @@ class ProjectionNamesCommand extends Command
         $this->mySqlProjectionManager = $mySqlProjectionManager;
     }
 
-
     protected function configure()
     {
-        $this
-            ->setName('event-store:projection:names')
+        $this->setName('event-store:projection:names')
             ->setDescription('Shows a list of all projection names. Can be filtered.')
             ->addArgument(self::ARGUMENT_FILTER, InputArgument::OPTIONAL, 'Filter by this string')
             ->addOption(self::OPTION_REGEX, 'r', InputOption::VALUE_NONE, 'Enable regex syntax for filter')
             ->addOption(self::OPTION_LIMIT, 'l', InputOption::VALUE_REQUIRED, 'Limit the result set', 20)
             ->addOption(self::OPTION_OFFSET, 'o', InputOption::VALUE_REQUIRED, 'Offset for result set', 0);
-//            ->addOption(self::OPTION_MANAGER, 'm', InputOption::VALUE_REQUIRED, 'Manager for result set', null);
+        //            ->addOption(self::OPTION_MANAGER, 'm', InputOption::VALUE_REQUIRED, 'Manager for result set', null);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -79,30 +76,28 @@ class ProjectionNamesCommand extends Command
         $offset = (int) $input->getOption(self::OPTION_OFFSET);
         $limit = (int) $input->getOption(self::OPTION_LIMIT);
 
-        $names = array_map(function(ProjectionContext $projectionContext) {
+        $names = array_map(function (ProjectionContext $projectionContext) {
             return [
                 'name' => $projectionContext->name(),
                 'projection' => \get_class($projectionContext->projection()),
-                'projector' => \get_class($projectionContext->projector())
+                'projector' => \get_class($projectionContext->projector()),
             ];
         }, $this->projectionContextPool->all());
 
-//        if (count($names) > $offset) {
-//            $projectionNames = $this->mySqlProjectionManager->$method($filter, $limit - (count($names) - $offset));
-//        } else {
-//            $projectionNames = $this->mySqlProjectionManager->$method($filter);
-//        }
-//
-//        foreach ($projectionNames as $projectionName) {
-//            $names[$projectionName] = ['initialized'];
-//        }
+        //        if (count($names) > $offset) {
+        //            $projectionNames = $this->mySqlProjectionManager->$method($filter, $limit - (count($names) - $offset));
+        //        } else {
+        //            $projectionNames = $this->mySqlProjectionManager->$method($filter);
+        //        }
+        //
+        //        foreach ($projectionNames as $projectionName) {
+        //            $names[$projectionName] = ['initialized'];
+        //        }
 
         $names = array_slice($names, $offset, $limit);
 
         $table = new Table($output);
-        $table
-            ->setHeaders(['name', 'projection', 'projector'])
-            ->setRows($names);
+        $table->setHeaders(['name', 'projection', 'projector'])->setRows($names);
 
         $table->render();
     }

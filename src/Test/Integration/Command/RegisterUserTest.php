@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Test\Integration\Command;
 
 use Magento\TestFramework\Helper\Bootstrap;
@@ -29,7 +28,6 @@ class RegisterUserTest extends TestCase
         $this->objectManager = Bootstrap::getObjectManager();
     }
 
-
     /**
      * @test
      */
@@ -41,25 +39,23 @@ class RegisterUserTest extends TestCase
         $commandBus = $es->commandBus();
         $this->assertInstanceOf(CommandBus::class, $commandBus);
 
-        $commandBusEventsRefl = (new \ReflectionProperty($commandBus, 'events'));
+        $commandBusEventsRefl = new \ReflectionProperty($commandBus, 'events');
         $commandBusEventsRefl->setAccessible(true);
         $commandBusEvents = $commandBusEventsRefl->getValue($commandBus);
-
 
         /** @var EventBus $commandBus */
         $eventBus = $this->objectManager->get(EventBus::class);
         $this->assertInstanceOf(EventBus::class, $eventBus);
 
-
-        $eventBusEventsRefl = (new \ReflectionProperty($eventBus, 'events'));
+        $eventBusEventsRefl = new \ReflectionProperty($eventBus, 'events');
         $eventBusEventsRefl->setAccessible(true);
         $eventBusEvents = $eventBusEventsRefl->getValue($eventBus);
 
         $this->assertNotSame(
-            $commandBusEvents, $eventBusEvents,
+            $commandBusEvents,
+            $eventBusEvents,
             'CommandBus and EventBus should not have the same instance of the ActionEventEmitter'
         );
-
     }
 
     /**
@@ -102,17 +98,21 @@ EOT;
         $connection->query($sql);
 
         $userId = Uuid::uuid4();
-        $es->commandBus()->dispatch(new RegisterUser([
-            'id' => $userId->toString(),
-            'email' => 'random@email.com',
-            'password' => 'test'
-        ]));
+        $es->commandBus()->dispatch(
+            new RegisterUser([
+                'id' => $userId->toString(),
+                'email' => 'random@email.com',
+                'password' => 'test',
+            ])
+        );
 
         for ($i = 0; $i < 5; $i++) {
-            $es->commandBus()->dispatch(new ChangeEmail([
-                'email' => 'random' . $i . '@email.com',
-                'id' => $userId->toString()
-            ]));
+            $es->commandBus()->dispatch(
+                new ChangeEmail([
+                    'email' => 'random' . $i . '@email.com',
+                    'id' => $userId->toString(),
+                ])
+            );
         }
 
         /** @var UserRepository $userRepository */

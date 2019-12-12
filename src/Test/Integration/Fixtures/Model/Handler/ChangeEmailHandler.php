@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Handler;
 
-
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure\UserRepository;
 use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Command\ChangeEmail;
 

@@ -12,14 +12,14 @@ class ProjectionStopCommand extends AbstractProjectionCommand
     protected function configure()
     {
         parent::configure();
-        $this
-            ->setName('event-store:projection:stop')
-            ->setDescription('Stops a projection');
+        $this->setName('event-store:projection:stop')->setDescription('Stops a projection');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(sprintf('<action>Stopping projection <highlight>%s</highlight></action>', $this->projectionName));
+        $output->writeln(
+            sprintf('<action>Stopping projection <highlight>%s</highlight></action>', $this->projectionName)
+        );
         $this->projectionContext->projectionManager()->stopProjection($this->projectionName);
     }
 }

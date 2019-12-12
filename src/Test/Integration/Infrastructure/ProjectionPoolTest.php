@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Infrastructure;
-
 
 use Magento\TestFramework\Helper\Bootstrap;
 use PHPUnit\Framework\TestCase;
@@ -20,7 +18,8 @@ class ProjectionPoolTest extends TestCase
     /** @var  \Magento\Framework\ObjectManagerInterface */
     private $objectManager;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->objectManager = Bootstrap::getObjectManager();
     }
 
@@ -39,7 +38,7 @@ class ProjectionPoolTest extends TestCase
             'projectionManager' => $this->objectManager->get(MySqlProjectionManager::class),
             'projection' => $this->objectManager->create(UserProjection::class),
             'readModel' => $this->objectManager->get(UserReadModel::class),
-            'name' => 'user_projection'
+            'name' => 'user_projection',
         ]);
         $projectionPool->add($userProjectionContext);
 
@@ -63,8 +62,8 @@ class ProjectionPoolTest extends TestCase
                     'projectionManager' => $this->objectManager->get(MySqlProjectionManager::class),
                     'projection' => $this->objectManager->create(UserProjection::class),
                     'readModel' => $this->objectManager->get(UserReadModel::class),
-                ]
-            ]
+                ],
+            ],
         ]);
 
         $this->assertNotCount(0, $projectionPool->all());

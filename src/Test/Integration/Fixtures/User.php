@@ -10,7 +10,9 @@ use ReachDigital\ProophEventStore\Test\Integration\Fixtures\Model\Event\UserRegi
 
 class User extends AggregateRoot
 {
-    private $id, $email, $password;
+    private $id;
+    private $email;
+    private $password;
 
     public function changeEmail(string $newEmail): void
     {
@@ -18,18 +20,22 @@ class User extends AggregateRoot
             return;
         }
 
-        $this->recordThat(EmailChanged::occur($this->id, [
-            'email' => $newEmail
-        ]));
+        $this->recordThat(
+            EmailChanged::occur($this->id, [
+                'email' => $newEmail,
+            ])
+        );
     }
 
     public static function registerWithData(string $id, string $email, string $password): self
     {
-        $obj = new self;
-        $obj->recordThat(UserRegistered::occur($id, [
-            'email' => $email,
-            'password' => $password
-        ]));
+        $obj = new self();
+        $obj->recordThat(
+            UserRegistered::occur($id, [
+                'email' => $email,
+                'password' => $password,
+            ])
+        );
 
         return $obj;
     }

@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Infrastructure;
-
 
 use Prooph\EventStore\Projection\ProjectionManager;
 use Prooph\EventStore\Projection\Projector;
@@ -67,19 +65,23 @@ class ProjectionContext
         return $this->projector;
     }
 
-    public function name(): string {
+    public function name(): string
+    {
         return $this->name;
     }
 
-    public function readModel(): ReadModel {
+    public function readModel(): ReadModel
+    {
         return $this->readModel;
     }
 
-    public function projection(): ProjectionInterface {
+    public function projection(): ProjectionInterface
+    {
         return $this->projection;
     }
 
-    public function projectionManager(): ProjectionManager {
+    public function projectionManager(): ProjectionManager
+    {
         return $this->projectionManager;
     }
 }

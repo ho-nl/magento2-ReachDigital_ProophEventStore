@@ -32,14 +32,11 @@ abstract class AbstractProjectionCommand extends Command
      */
     protected $projectionContext;
 
-    public function __construct(
-        ProjectionContextPool $projectionContextPool,
-        $name = null
-    ) {
+    public function __construct(ProjectionContextPool $projectionContextPool, $name = null)
+    {
         parent::__construct($name);
         $this->projectionContextPool = $projectionContextPool;
     }
-
 
     protected function configure()
     {
@@ -57,7 +54,10 @@ abstract class AbstractProjectionCommand extends Command
 
         $output->writeln(sprintf('<header>Initialized projection "%s"</header>', $this->projectionName));
         try {
-            $state = $this->projectionContext->projectionManager()->fetchProjectionStatus($this->projectionName)->getValue();
+            $state = $this->projectionContext
+                ->projectionManager()
+                ->fetchProjectionStatus($this->projectionName)
+                ->getValue();
         } catch (\Prooph\EventStore\Exception\RuntimeException $e) {
             $state = 'unknown';
         }

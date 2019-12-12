@@ -7,7 +7,6 @@
 declare(strict_types=1);
 namespace ReachDigital\ProophEventStore\Infrastructure;
 
-
 //@todo move to Infrastructure\Bus namespace
 class CommandRouter extends \Prooph\ServiceBus\Plugin\Router\CommandRouter
 {

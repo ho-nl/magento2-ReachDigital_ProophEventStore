@@ -11,7 +11,6 @@ use Magento\Framework\Setup\UninstallInterface;
 
 class UninstallSchema implements UninstallInterface
 {
-
     /**
      * Invoked when remove-data flag is set during module uninstall.
      *

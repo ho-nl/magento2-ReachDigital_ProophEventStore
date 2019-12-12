@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Infrastructure;
-
 
 use ReachDigital\ProophEventStore\Api\ProjectionInterface;
 use ReachDigital\ProophEventStore\Exception\ProjectionNotFoundException;
@@ -11,7 +9,6 @@ use ReachDigital\ProophEventStore\Exception\ProjectionNotFoundException;
 //@todo move to Infrastructure\Projection namespace
 class ProjectionContextPool
 {
-
     /** @var ProjectionContext[] */
     private $projectionContexts = [];
 
@@ -19,14 +16,10 @@ class ProjectionContextPool
      * ProjectionManagerPool constructor.
      * @param ProjectionContext[] $projectionContexts
      */
-    public function __construct(
-        ProjectionContextFactory $projectionContextFactory,
-        array $projectionContexts = []
-    ) {
+    public function __construct(ProjectionContextFactory $projectionContextFactory, array $projectionContexts = [])
+    {
         foreach ($projectionContexts as $name => $projectionContext) {
-            $this->add(
-                $projectionContextFactory->create(['name' => $name] + $projectionContext)
-            );
+            $this->add($projectionContextFactory->create(['name' => $name] + $projectionContext));
         }
     }
 
@@ -42,7 +35,7 @@ class ProjectionContextPool
      */
     public function get(string $name)
     {
-        if (! isset($this->projectionContexts[$name])) {
+        if (!isset($this->projectionContexts[$name])) {
             throw new ProjectionNotFoundException(__('Projection not found %1', $name));
         }
         return $this->projectionContexts[$name];
@@ -54,7 +47,7 @@ class ProjectionContextPool
      */
     public function remove(string $name): void
     {
-        if (! isset($this->projectionContexts[$name])) {
+        if (!isset($this->projectionContexts[$name])) {
             throw new ProjectionNotFoundException(__('Projection not found %1', $name));
         }
         unset($this->projectionContexts[$name]);

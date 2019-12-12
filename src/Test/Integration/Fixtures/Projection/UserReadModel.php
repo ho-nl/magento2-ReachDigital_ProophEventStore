@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection;
-
 
 use Prooph\EventStore\Projection\AbstractReadModel;
 use ReachDigital\ProophEventStore\Infrastructure\Pdo;
@@ -11,7 +9,7 @@ use ReachDigital\ProophEventStore\Infrastructure\Pdo;
 class UserReadModel extends AbstractReadModel
 {
     public const TABLE = 'user_read';
-    
+
     private $connection;
 
     public function __construct(Pdo $connection)

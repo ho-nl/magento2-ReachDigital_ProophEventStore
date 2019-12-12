@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Test\Integration\Console\Command;
-
 
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
@@ -19,14 +17,15 @@ class ProjectionNamesCommandTest extends TestCase
 {
     /** @var ObjectManager */
     private $objectManager;
-    
+
     /** @var ProjectionNamesCommand */
     private $command;
-    
+
     /** @var CommandTester */
     private $tester;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->objectManager = Bootstrap::getObjectManager();
         $this->command = $this->objectManager->create(ProjectionNamesCommand::class, [
             'projectionContextPool' => $this->objectManager->create(ProjectionContextPool::class, [
@@ -35,14 +34,13 @@ class ProjectionNamesCommandTest extends TestCase
                         'projectionManager' => $this->objectManager->get(MySqlProjectionManager::class),
                         'projection' => $this->objectManager->create(UserProjection::class),
                         'readModel' => $this->objectManager->get(UserReadModel::class),
-                    ]
-                ]
-            ])
+                    ],
+                ],
+            ]),
         ]);
         $this->tester = new CommandTester($this->command);
-        
     }
-    
+
     /**
      * @test get projection names
      */
@@ -52,7 +50,7 @@ class ProjectionNamesCommandTest extends TestCase
         $output = $this->tester->getDisplay();
 
         $this->assertEquals(
-<<<OUTPUT
+            <<<OUTPUT
 Projection names
 +-----------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
 | name            | projection                                                                        | projector                                                        |
@@ -61,7 +59,9 @@ Projection names
 +-----------------+-----------------------------------------------------------------------------------+------------------------------------------------------------------+
 
 OUTPUT
+            ,
 
-, $output);
+            $output
+        );
     }
 }

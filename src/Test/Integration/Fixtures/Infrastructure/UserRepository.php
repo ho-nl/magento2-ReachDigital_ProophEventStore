@@ -33,7 +33,7 @@ class UserRepository extends AggregateRepository
         $this->saveAggregateRoot($user);
     }
 
-    public function get(string $id) :? User
+    public function get(string $id): ?User
     {
         return $this->getAggregateRoot($id);
     }

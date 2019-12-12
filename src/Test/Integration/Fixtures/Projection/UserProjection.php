@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Test\Integration\Fixtures\Projection;
-
 
 use Prooph\EventStore\Projection\ReadModelProjector;
 use ReachDigital\ProophEventStore\Api\ProjectionInterface;
@@ -19,27 +17,26 @@ class UserProjection implements ProjectionInterface
      */
     public function project($projector)
     {
-        $projector->fromCategory(User::class)
-            ->when([
-                UserRegistered::class => function ($state, UserRegistered $event) {
+        $projector->fromCategory(User::class)->when([
+            UserRegistered::class => function ($state, UserRegistered $event) {
                 /** @var UserReadModel $readModel */
-                    $readModel = $this->readModel();
-                    $readModel->stack('insert', [
-                        'id' => $event->aggregateId(),
-                        'password' => $event->password(),
-                        'email' => $event->email(),
-                        'name' => 'to be replaced',
-                    ]);
-                },
-                EmailChanged::class => function ($state, EmailChanged $event) {
-                    /** @var UserReadModel $readModel */
-                    $readModel = $this->readModel();
-                    $readModel->stack('changeEmail', [
-                        'id' => $event->aggregateId(),
-                        'email' => $event->email()
-                    ]);
-                },
-            ]);
+                $readModel = $this->readModel();
+                $readModel->stack('insert', [
+                    'id' => $event->aggregateId(),
+                    'password' => $event->password(),
+                    'email' => $event->email(),
+                    'name' => 'to be replaced',
+                ]);
+            },
+            EmailChanged::class => function ($state, EmailChanged $event) {
+                /** @var UserReadModel $readModel */
+                $readModel = $this->readModel();
+                $readModel->stack('changeEmail', [
+                    'id' => $event->aggregateId(),
+                    'email' => $event->email(),
+                ]);
+            },
+        ]);
         return $projector;
     }
 }

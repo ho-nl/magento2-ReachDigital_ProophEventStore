@@ -8,5 +8,5 @@ declare(strict_types=1);
 \Magento\Framework\Component\ComponentRegistrar::register(
     \Magento\Framework\Component\ComponentRegistrar::MODULE,
     'ReachDigital_ProophEventStore',
-    __DIR__.'/src'
+    __DIR__ . '/src'
 );

@@ -1,9 +1,7 @@
 <?php
 declare(strict_types=1);
 
-
 namespace ReachDigital\ProophEventStore\Test\Integration\Console\Command;
-
 
 use Magento\TestFramework\Helper\Bootstrap;
 use Magento\TestFramework\ObjectManager;
@@ -27,7 +25,8 @@ class ProjectionRunCommandTest extends TestCase
     /** @var CommandTester */
     private $tester;
 
-    protected function setUp() {
+    protected function setUp()
+    {
         $this->objectManager = Bootstrap::getObjectManager();
 
         $this->command = $this->objectManager->create(ProjectionRunCommand::class, [
@@ -37,12 +36,11 @@ class ProjectionRunCommandTest extends TestCase
                         'projectionManager' => $this->objectManager->get(MySqlProjectionManager::class),
                         'projection' => $this->objectManager->create(UserProjection::class),
                         'readModel' => $this->objectManager->get(UserReadModel::class),
-                    ]
-                ]
-            ])
+                    ],
+                ],
+            ]),
         ]);
         $this->tester = new CommandTester($this->command);
-
     }
 
     /**
@@ -52,7 +50,7 @@ class ProjectionRunCommandTest extends TestCase
     {
         $this->tester->execute([
             'projection-name' => 'user_projection',
-            '--run-once' => true
+            '--run-once' => true,
         ]);
         $output = $this->tester->getDisplay();
         echo $output;

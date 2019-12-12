@@ -13,9 +13,7 @@ class ProjectionStreamPositionsCommand extends AbstractProjectionCommand
     protected function configure(): void
     {
         parent::configure();
-        $this
-            ->setName('event-store:projection:positions')
-            ->setDescription('Shows the current stream positions');
+        $this->setName('event-store:projection:positions')->setDescription('Shows the current stream positions');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -23,7 +21,8 @@ class ProjectionStreamPositionsCommand extends AbstractProjectionCommand
         $output->writeln('<action>All stream positions on this projection manager:</action>');
         $table = (new Table($output))->setHeaders(['Stream', 'Position']);
 
-        $streamPositions = $this->projectionContext->projectionManager()
+        $streamPositions = $this->projectionContext
+            ->projectionManager()
             ->fetchProjectionStreamPositions($this->projectionName);
         foreach ($streamPositions as $stream => $position) {
             $table->addRow([$stream, $position]);
